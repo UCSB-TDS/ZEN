@@ -24,10 +24,9 @@ REMINDER: before benchmarking, please use the corresponding `num_window` paramet
 
 
 ## LeNet Small on CIFAR dataset different levels of optimization 
-* `cargo run --bin microbench_lenet_small_cifar_naive --release 2>/dev/null` 
-* `cargo run --bin microbench_lenet_small_cifar_op1 --release 2>/dev/null` 
-* `cargo run --bin microbench_lenet_small_cifar_op2 --release 2>/dev/null` 
-* `cargo run --bin microbench_lenet_small_cifar_op3 --release 2>/dev/null` 
+* `cargo run --bin microbench_lenet_medium_cifar_naive --release 2>/dev/null` 
+* `cargo run --bin microbench_lenet_medium_cifar_op1 --release 2>/dev/null` 
+* `cargo run --bin microbench_lenet_medium_cifar_op2 --release 2>/dev/null` 
 
 
 

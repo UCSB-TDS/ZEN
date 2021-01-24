@@ -25,10 +25,9 @@ REMINDER: before benchmarking, please use the corresponding `num_window` paramet
 * `cargo run --bin microbench_SIMD_by_batch_size --release 2>/dev/null`
 
 ## LeNet Small on CIFAR dataset different levels of optimization 
-* `cargo run --bin microbench_lenet_small_cifar_naive --release 2>/dev/null` 
-* `cargo run --bin microbench_lenet_small_cifar_op1 --release 2>/dev/null` 
-* `cargo run --bin microbench_lenet_small_cifar_op2 --release 2>/dev/null` 
-* `cargo run --bin microbench_lenet_small_cifar_op3 --release 2>/dev/null` 
+* `cargo run --bin microbench_lenet_medium_cifar_naive --release 2>/dev/null` 
+* `cargo run --bin microbench_lenet_medium_cifar_op1 --release 2>/dev/null` 
+* `cargo run --bin microbench_lenet_medium_cifar_op2 --release 2>/dev/null` 
 
 ## Naive/baseline for all combinations of models and datasets(only calculate the number of constraints)
 * `cargo run --bin shallownet_naive_mnist --release 2>/dev/null`
@@ -51,6 +50,11 @@ REMINDER: before benchmarking, please use the corresponding `num_window` paramet
 * `cargo run --bin lenet_medium_optimized_pedersen_face --release 2>/dev/null`
 * `cargo run --bin lenet_large_optimized_pedersen_face --release 2>/dev/null`
 
+
+
+# Build on your own
+
+Please refer to `Tutorial.md` for details on how to build your own ZK NN inference.
 
 
 
