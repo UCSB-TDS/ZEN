@@ -137,3 +137,4 @@ numpyInferenceEngine/LeNet_CIFAR10/data/CIFAR_10/*.npy
 numpyInferenceEngine/LeNet_CIFAR10/data/CIFAR_100/*.npy
 numpyInferenceEngine/LeNet_CIFAR100/data/CIFAR_10/*.npy
 numpyInferenceEngine/LeNet_CIFAR100/data/CIFAR_100/*.npy
+

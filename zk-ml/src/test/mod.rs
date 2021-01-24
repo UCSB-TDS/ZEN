@@ -1,3 +1,4 @@
 mod commit_test;
-mod fc_test;
-mod relu_test;
+mod forward_correctness_check_lenet_medium;
+mod forward_correctness_check_lenet_small;
+mod forward_correctness_check_shallownet;

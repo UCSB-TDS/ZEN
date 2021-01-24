@@ -9,6 +9,7 @@ use zk_ml::lenet_circuit::*;
 use zk_ml::pedersen_commit::*;
 use zk_ml::read_inputs::*;
 use zk_ml::vanilla::*;
+
 fn main() {
     let mut rng = rand::thread_rng();
 
@@ -98,31 +99,28 @@ fn main() {
         1,
     );
 
-    let multipler_conv1: Vec<f32> = read_vector1d_f32(
+    let multiplier_conv1: Vec<f32> = read_vector1d_f32(
         "pretrained_model/LeNet_CIFAR_pretrained/LeNet_Small_conv1_weight_s.txt".to_string(),
         6,
     );
-    let multipler_conv2: Vec<f32> = read_vector1d_f32(
+    let multiplier_conv2: Vec<f32> = read_vector1d_f32(
         "pretrained_model/LeNet_CIFAR_pretrained/LeNet_Small_conv2_weight_s.txt".to_string(),
         16,
     );
-    let multipler_conv3: Vec<f32> = read_vector1d_f32(
+    let multiplier_conv3: Vec<f32> = read_vector1d_f32(
         "pretrained_model/LeNet_CIFAR_pretrained/LeNet_Small_conv3_weight_s.txt".to_string(),
         120,
     );
 
-    let multipler_fc1: Vec<f32> = read_vector1d_f32(
+    let multiplier_fc1: Vec<f32> = read_vector1d_f32(
         "pretrained_model/LeNet_CIFAR_pretrained/LeNet_Small_linear1_weight_s.txt".to_string(),
         84,
     );
-    let multipler_fc2: Vec<f32> = read_vector1d_f32(
+    let multiplier_fc2: Vec<f32> = read_vector1d_f32(
         "pretrained_model/LeNet_CIFAR_pretrained/LeNet_Small_linear2_weight_s.txt".to_string(),
         10,
     );
 
-    // println!("x_0 {}\n conv_output_0 {} {} {}\n fc_output_0 {} {}\n conv_w_0 {} {} {}\n fc_w_0 {} {}\n",
-    //         x_0[0], conv1_output_0[0], conv2_output_0[0], conv3_output_0[0],  fc1_output_0[0],  fc2_output_0[0],
-    //         conv1_weights_0[0], conv2_weights_0[0], conv3_weights_0[0], fc1_weights_0[0], fc2_weights_0[0]);
     println!("finish reading parameters");
 
     let z: Vec<Vec<u8>> = lenet_circuit_forward_u8(
@@ -143,11 +141,11 @@ fn main() {
         conv3_weights_0[0],
         fc1_weights_0[0],
         fc2_weights_0[0],
-        multipler_conv1.clone(),
-        multipler_conv2.clone(),
-        multipler_conv3.clone(),
-        multipler_fc1.clone(),
-        multipler_fc2.clone(),
+        multiplier_conv1.clone(),
+        multiplier_conv2.clone(),
+        multiplier_conv3.clone(),
+        multiplier_fc1.clone(),
+        multiplier_fc2.clone(),
     );
 
     println!("finish forwarding");
@@ -170,8 +168,10 @@ fn main() {
     let z_com = pedersen_commit(&flattened_z1d, &param, &z_open);
     let end = Instant::now();
     println!("commit time {:?}", end.duration_since(begin));
+    //we only do one image in zk proof.
+    let classification_res = argmax_u8(z[0].clone());
 
-    let full_circuit = LeNetCircuitU8OptimizedLv3Pedersen {
+    let full_circuit = LeNetCircuitU8OptimizedLv3PedersenClassification {
         params: param.clone(),
         x: x.clone(),
         x_com: x_com.clone(),
@@ -198,15 +198,16 @@ fn main() {
         fc2_weights_0: fc2_weights_0[0],
 
         //multiplier for quantization
-        multiplier_conv1: multipler_conv1.clone(),
-        multiplier_conv2: multipler_conv2.clone(),
-        multiplier_conv3: multipler_conv3.clone(),
-        multiplier_fc1: multipler_fc1.clone(),
-        multiplier_fc2: multipler_fc2.clone(),
+        multiplier_conv1: multiplier_conv1.clone(),
+        multiplier_conv2: multiplier_conv2.clone(),
+        multiplier_conv3: multiplier_conv3.clone(),
+        multiplier_fc1: multiplier_fc1.clone(),
+        multiplier_fc2: multiplier_fc2.clone(),
 
         z: z.clone(),
         z_open: z_open,
         z_com: z_com,
+        argmax_res: classification_res,
     };
 
     // println!("{:?}", full_circuit);
@@ -217,6 +218,7 @@ fn main() {
             .clone()
             .generate_constraints(sanity_cs.clone())
             .unwrap();
+
         let res = sanity_cs.is_satisfied().unwrap();
         println!("are the constraints satisfied?: {}\n", res);
 

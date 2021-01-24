@@ -9,6 +9,7 @@ use zk_ml::full_circuit::*;
 use zk_ml::pedersen_commit::*;
 use zk_ml::read_inputs::*;
 use zk_ml::vanilla::*;
+
 fn main() {
     let mut rng = rand::thread_rng();
     //let (x, l1_mat, l2_mat): (Vec<u8>, Vec<Vec<u8>>, Vec<Vec<u8>>) = read_shallownet_inputs_u8();
@@ -69,17 +70,19 @@ fn main() {
     let z_com = pedersen_commit(&z, &param, &z_open);
     let end = Instant::now();
     println!("commit time {:?}", end.duration_since(begin));
+    let classification_res = argmax_u8(z.clone());
 
-    let full_circuit = FullCircuitOpLv3Pedersen {
+    let full_circuit = FullCircuitOpLv3PedersenClassification {
         params: param.clone(),
         x: x.clone(),
         x_com: x_com.clone(),
         x_open: x_open,
         l1: l1_mat,
         l2: l2_mat,
-        z,
+        z: z.clone(),
         z_com: z_com.clone(),
         z_open,
+        argmax_res: classification_res,
 
         x_0: x_0[0],
         y_0: l1_output_0[0],
@@ -98,6 +101,7 @@ fn main() {
             .clone()
             .generate_constraints(sanity_cs.clone())
             .unwrap();
+
         let res = sanity_cs.is_satisfied().unwrap();
         println!("are the constraints satisfied?: {}\n", res);
 

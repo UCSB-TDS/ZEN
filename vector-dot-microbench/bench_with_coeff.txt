@@ -1,0 +1,450 @@
+constant * constant vector len 1000
+start inline lcs
+lc_map len 1000
+num coeffs: 2000 num lcs: 999
+finish inline lcs
+allocate a,b and c
+setup time 366.089707ms
+lc_map len 1000
+num coeffs: 2000 num lcs: 999
+prove time 162.159351ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 1000
+start inline lcs
+lc_map len 1000
+num coeffs: 2000 num lcs: 999
+finish inline lcs
+allocate a,b and c
+setup time 925.475083ms
+lc_map len 1000
+num coeffs: 2000 num lcs: 999
+prove time 611.171235ms
+num of constraints 0
+
+
+
+
+wire * wire vector len 1000
+start inline lcs
+lc_map len 4000
+num coeffs: 5000 num lcs: 999
+finish inline lcs
+allocate a,b and c
+setup time 3.760866585s
+lc_map len 4000
+num coeffs: 5000 num lcs: 999
+prove time 1.161788826s
+num of constraints 1000
+
+
+
+
+constant * constant vector len 3000
+start inline lcs
+lc_map len 3000
+num coeffs: 6000 num lcs: 2999
+finish inline lcs
+allocate a,b and c
+setup time 391.51121ms
+lc_map len 3000
+num coeffs: 6000 num lcs: 2999
+prove time 194.479535ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 3000
+start inline lcs
+lc_map len 3000
+num coeffs: 6000 num lcs: 2999
+finish inline lcs
+allocate a,b and c
+setup time 4.888950251s
+lc_map len 3000
+num coeffs: 6000 num lcs: 2999
+prove time 4.367562171s
+num of constraints 0
+
+
+
+
+wire * wire vector len 3000
+start inline lcs
+lc_map len 12000
+num coeffs: 15000 num lcs: 2999
+finish inline lcs
+allocate a,b and c
+setup time 12.312969121s
+lc_map len 12000
+num coeffs: 15000 num lcs: 2999
+prove time 6.208739293s
+num of constraints 3000
+
+
+
+
+constant * constant vector len 5000
+start inline lcs
+lc_map len 5000
+num coeffs: 10000 num lcs: 4999
+finish inline lcs
+allocate a,b and c
+setup time 422.813037ms
+lc_map len 5000
+num coeffs: 10000 num lcs: 4999
+prove time 229.789683ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 5000
+start inline lcs
+lc_map len 5000
+num coeffs: 10000 num lcs: 4999
+finish inline lcs
+allocate a,b and c
+setup time 12.362233731s
+lc_map len 5000
+num coeffs: 10000 num lcs: 4999
+prove time 11.738897623s
+num of constraints 0
+
+
+
+
+wire * wire vector len 5000
+start inline lcs
+lc_map len 20000
+num coeffs: 25000 num lcs: 4999
+finish inline lcs
+allocate a,b and c
+setup time 24.141779079s
+lc_map len 20000
+num coeffs: 25000 num lcs: 4999
+prove time 14.916003864s
+num of constraints 5000
+
+
+
+
+constant * constant vector len 7000
+start inline lcs
+lc_map len 7000
+num coeffs: 14000 num lcs: 6999
+finish inline lcs
+allocate a,b and c
+setup time 454.259472ms
+lc_map len 7000
+num coeffs: 14000 num lcs: 6999
+prove time 264.039073ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 7000
+start inline lcs
+lc_map len 7000
+num coeffs: 14000 num lcs: 6999
+finish inline lcs
+allocate a,b and c
+setup time 23.491784975s
+lc_map len 7000
+num coeffs: 14000 num lcs: 6999
+prove time 22.760110076s
+num of constraints 0
+
+
+
+
+wire * wire vector len 7000
+start inline lcs
+lc_map len 28000
+num coeffs: 35000 num lcs: 6999
+finish inline lcs
+allocate a,b and c
+setup time 38.691521821s
+lc_map len 28000
+num coeffs: 35000 num lcs: 6999
+prove time 26.57716379s
+num of constraints 7000
+
+
+
+
+constant * constant vector len 9000
+start inline lcs
+lc_map len 9000
+num coeffs: 18000 num lcs: 8999
+finish inline lcs
+allocate a,b and c
+setup time 491.992262ms
+lc_map len 9000
+num coeffs: 18000 num lcs: 8999
+prove time 302.812049ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 9000
+start inline lcs
+lc_map len 9000
+num coeffs: 18000 num lcs: 8999
+finish inline lcs
+allocate a,b and c
+setup time 38.34929192s
+lc_map len 9000
+num coeffs: 18000 num lcs: 8999
+prove time 37.499533205s
+num of constraints 0
+
+
+
+
+wire * wire vector len 9000
+start inline lcs
+lc_map len 36000
+num coeffs: 45000 num lcs: 8999
+finish inline lcs
+allocate a,b and c
+setup time 58.172294127s
+lc_map len 36000
+num coeffs: 45000 num lcs: 8999
+prove time 43.203897975s
+num of constraints 9000
+
+
+
+
+constant * constant vector len 11000
+start inline lcs
+lc_map len 11000
+num coeffs: 22000 num lcs: 10999
+finish inline lcs
+allocate a,b and c
+setup time 524.856198ms
+lc_map len 11000
+num coeffs: 22000 num lcs: 10999
+prove time 340.445885ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 11000
+start inline lcs
+lc_map len 11000
+num coeffs: 22000 num lcs: 10999
+finish inline lcs
+allocate a,b and c
+setup time 56.772987731s
+lc_map len 11000
+num coeffs: 22000 num lcs: 10999
+prove time 55.792830224s
+num of constraints 0
+
+
+
+
+wire * wire vector len 11000
+start inline lcs
+lc_map len 44000
+num coeffs: 55000 num lcs: 10999
+finish inline lcs
+allocate a,b and c
+setup time 79.741008767s
+lc_map len 44000
+num coeffs: 55000 num lcs: 10999
+prove time 62.12427071s
+num of constraints 11000
+
+
+
+
+constant * constant vector len 13000
+start inline lcs
+lc_map len 13000
+num coeffs: 26000 num lcs: 12999
+finish inline lcs
+allocate a,b and c
+setup time 560.5701ms
+lc_map len 13000
+num coeffs: 26000 num lcs: 12999
+prove time 374.275631ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 13000
+start inline lcs
+lc_map len 13000
+num coeffs: 26000 num lcs: 12999
+finish inline lcs
+allocate a,b and c
+setup time 79.055469144s
+lc_map len 13000
+num coeffs: 26000 num lcs: 12999
+prove time 78.059446333s
+num of constraints 0
+
+
+
+
+wire * wire vector len 13000
+start inline lcs
+lc_map len 52000
+num coeffs: 65000 num lcs: 12999
+finish inline lcs
+allocate a,b and c
+setup time 105.315591944s
+lc_map len 52000
+num coeffs: 65000 num lcs: 12999
+prove time 84.910397628s
+num of constraints 13000
+
+
+
+
+constant * constant vector len 15000
+start inline lcs
+lc_map len 15000
+num coeffs: 30000 num lcs: 14999
+finish inline lcs
+allocate a,b and c
+setup time 598.242687ms
+lc_map len 15000
+num coeffs: 30000 num lcs: 14999
+prove time 412.771723ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 15000
+start inline lcs
+lc_map len 15000
+num coeffs: 30000 num lcs: 14999
+finish inline lcs
+allocate a,b and c
+setup time 104.734780339s
+lc_map len 15000
+num coeffs: 30000 num lcs: 14999
+prove time 103.249687682s
+num of constraints 0
+
+
+
+
+wire * wire vector len 15000
+start inline lcs
+lc_map len 60000
+num coeffs: 75000 num lcs: 14999
+finish inline lcs
+allocate a,b and c
+setup time 133.70948976s
+lc_map len 60000
+num coeffs: 75000 num lcs: 14999
+prove time 110.433477009s
+num of constraints 15000
+
+
+
+
+constant * constant vector len 17000
+start inline lcs
+lc_map len 17000
+num coeffs: 34000 num lcs: 16999
+finish inline lcs
+allocate a,b and c
+setup time 624.86283ms
+lc_map len 17000
+num coeffs: 34000 num lcs: 16999
+prove time 445.014449ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 17000
+start inline lcs
+lc_map len 17000
+num coeffs: 34000 num lcs: 16999
+finish inline lcs
+allocate a,b and c
+setup time 134.178939289s
+lc_map len 17000
+num coeffs: 34000 num lcs: 16999
+prove time 132.689134408s
+num of constraints 0
+
+
+
+
+wire * wire vector len 17000
+start inline lcs
+lc_map len 68000
+num coeffs: 85000 num lcs: 16999
+finish inline lcs
+allocate a,b and c
+setup time 169.995031401s
+lc_map len 68000
+num coeffs: 85000 num lcs: 16999
+prove time 144.23968553s
+num of constraints 17000
+
+
+
+
+constant * constant vector len 19000
+start inline lcs
+lc_map len 19000
+num coeffs: 38000 num lcs: 18999
+finish inline lcs
+allocate a,b and c
+setup time 657.97759ms
+lc_map len 19000
+num coeffs: 38000 num lcs: 18999
+prove time 482.024012ms
+num of constraints 0
+
+
+
+
+constant * wire vector len 19000
+start inline lcs
+lc_map len 19000
+num coeffs: 38000 num lcs: 18999
+finish inline lcs
+allocate a,b and c
+setup time 167.948162665s
+lc_map len 19000
+num coeffs: 38000 num lcs: 18999
+prove time 165.445080368s
+num of constraints 0
+
+
+
+
+wire * wire vector len 19000
+start inline lcs
+lc_map len 76000
+num coeffs: 95000 num lcs: 18999
+finish inline lcs
+allocate a,b and c
+setup time 204.68235319s
+lc_map len 76000
+num coeffs: 95000 num lcs: 18999
+prove time 176.665641367s
+num of constraints 19000
+
+
+
+

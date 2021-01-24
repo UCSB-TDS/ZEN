@@ -32,9 +32,9 @@ pub type JubJubFr = ed_on_bls12_381::Fr;
 //=======================
 
 //TODO under different input size. choose different window size
-//pub const PERDERSON_WINDOW_SIZE: usize = 25; // this is for 28*28*1 MNIST input
-//pub const PERDERSON_WINDOW_SIZE: usize = 100; // this is for 32*32*3 CIFAR u8 input
-pub const PERDERSON_WINDOW_SIZE: usize = 100; // this is for 46*56*1 u8 FACE input
+pub const PERDERSON_WINDOW_SIZE: usize = 25; // this is for 28*28*1 MNIST input
+                                             //pub const PERDERSON_WINDOW_SIZE: usize = 100; // this is for 32*32*3 CIFAR u8 input
+                                             //pub const PERDERSON_WINDOW_SIZE: usize = 100; // this is for 46*56*1 u8 FACE input
 
 //this parameter is consistent
 pub const PERDERSON_WINDOW_NUM: usize = 256;

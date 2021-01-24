@@ -9,6 +9,7 @@ use zk_ml::lenet_circuit::*;
 use zk_ml::pedersen_commit::*;
 use zk_ml::read_inputs::*;
 use zk_ml::vanilla::*;
+
 fn main() {
     let mut rng = rand::thread_rng();
 
@@ -124,6 +125,7 @@ fn main() {
     // println!("x_0 {}\n conv_output_0 {} {} {}\n fc_output_0 {} {}\n conv_w_0 {} {} {}\n fc_w_0 {} {}\n",
     //         x_0[0], conv1_output_0[0], conv2_output_0[0], conv3_output_0[0],  fc1_output_0[0],  fc2_output_0[0],
     //         conv1_weights_0[0], conv2_weights_0[0], conv3_weights_0[0], fc1_weights_0[0], fc2_weights_0[0]);
+
     println!("finish reading parameters");
 
     let z: Vec<Vec<u8>> = lenet_circuit_forward_u8(
@@ -168,7 +170,10 @@ fn main() {
     let end = Instant::now();
     println!("commit time {:?}", end.duration_since(begin));
 
-    let full_circuit = LeNetCircuitU8OptimizedLv3Pedersen {
+    //we only do one image in zk proof.
+    let classification_res = argmax_u8(z[0].clone());
+
+    let full_circuit = LeNetCircuitU8OptimizedLv3PedersenClassification {
         params: param.clone(),
         x: x.clone(),
         x_com: x_com.clone(),
@@ -204,7 +209,9 @@ fn main() {
         z: z.clone(),
         z_open: z_open,
         z_com: z_com,
+        argmax_res: classification_res,
     };
+
     // println!("{:?}", full_circuit);
     // sanity checks
     {
@@ -213,6 +220,7 @@ fn main() {
             .clone()
             .generate_constraints(sanity_cs.clone())
             .unwrap();
+
         let res = sanity_cs.is_satisfied().unwrap();
         println!("are the constraints satisfied?: {}\n", res);
 

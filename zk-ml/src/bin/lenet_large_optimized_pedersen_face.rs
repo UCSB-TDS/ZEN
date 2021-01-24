@@ -1,4 +1,5 @@
 use algebra::ed_on_bls12_381::*;
+use algebra::CanonicalSerialize;
 use algebra::UniformRand;
 use crypto_primitives::commitment::pedersen::Randomness;
 use groth16::*;
@@ -8,7 +9,6 @@ use zk_ml::lenet_circuit::*;
 use zk_ml::pedersen_commit::*;
 use zk_ml::read_inputs::*;
 use zk_ml::vanilla::*;
-use algebra::CanonicalSerialize;
 
 fn main() {
     let mut rng = rand::thread_rng();
@@ -41,6 +41,7 @@ fn main() {
         4,
         4,
     );
+
     let fc1_w: Vec<Vec<u8>> = read_vector2d(
         "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear1_weight_q.txt".to_string(),
         256,
@@ -119,10 +120,11 @@ fn main() {
         "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear2_weight_s.txt".to_string(),
         40,
     );
+    let person_feature_vector = read_vector1d(
+        "pretrained_model/LeNet_ORL_pretrained/person_feature_vector.txt".to_string(),
+        40,
+    );
 
-    // println!("x_0 {}\n conv_output_0 {} {} {}\n fc_output_0 {} {}\n conv_w_0 {} {} {}\n fc_w_0 {} {}\n",
-    //         x_0[0], conv1_output_0[0], conv2_output_0[0], conv3_output_0[0],  fc1_output_0[0],  fc2_output_0[0],
-    //         conv1_weights_0[0], conv2_weights_0[0], conv3_weights_0[0], fc1_weights_0[0], fc2_weights_0[0]);
     println!("finish reading parameters");
     //batch size is only one for faster calculation of total constraints
     let flattened_x3d: Vec<Vec<Vec<u8>>> = x.clone().into_iter().flatten().collect();
@@ -131,9 +133,7 @@ fn main() {
     let param = setup(&[0u8; 32]);
     let x_open = Randomness::<JubJub>(Fr::rand(&mut rng));
     let x_com = pedersen_commit(&flattened_x1d, &param, &x_open);
-    // println!("x: {:?}\n", x);
-    // println!("l1_mat: {:?}\n", l1_mat);
-    // println!("l2_mat: {:?}\n", l2_mat);
+
     let z: Vec<Vec<u8>> = lenet_circuit_forward_u8(
         x.clone(),
         conv1_w.clone(),
@@ -162,7 +162,11 @@ fn main() {
     let z_open = Randomness::<JubJub>(Fr::rand(&mut rng));
     let z_com = pedersen_commit(&flattened_z1d, &param, &z_open);
 
-    let full_circuit = LeNetCircuitU8OptimizedLv3Pedersen {
+    let is_the_same_person: bool =
+        cosine_similarity(z[0].clone(), person_feature_vector.clone(), 50);
+    println!("is the same person ? {}", is_the_same_person);
+
+    let full_circuit = LeNetCircuitU8OptimizedLv3PedersenRecognition {
         params: param.clone(),
         x: x.clone(),
         x_com: x_com.clone(),
@@ -198,9 +202,15 @@ fn main() {
         z: z.clone(),
         z_open: z_open,
         z_com: z_com,
+        person_feature_vector: person_feature_vector.clone(),
+        threshold: 50,
+        result: is_the_same_person,
     };
 
-    // println!("{:?}", full_circuit);
+    let is_the_same_person: bool =
+        cosine_similarity(z[0].clone(), person_feature_vector.clone(), 50);
+    println!("is the same person ? {}", is_the_same_person);
+
     // sanity checks
     {
         let sanity_cs = ConstraintSystem::<Fq>::new_ref();
@@ -209,6 +219,7 @@ fn main() {
             .generate_constraints(sanity_cs.clone())
             .unwrap();
         let res = sanity_cs.is_satisfied().unwrap();
+
         println!("are the constraints satisfied?: {}\n", res);
 
         if !res {

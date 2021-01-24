@@ -1,0 +1,150 @@
+constant * wire ratio 0.05
+start inline lcs
+lc_map len 38500
+num coeffs: 48500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 68.22887527s
+lc_map len 38500
+num coeffs: 48500 num lcs: 9999
+prove time 52.190696284s
+num of constraints 9500
+
+
+
+
+constant * wire ratio 0.15
+start inline lcs
+lc_map len 35500
+num coeffs: 45500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 66.496360436s
+lc_map len 35500
+num coeffs: 45500 num lcs: 9999
+prove time 52.010890681s
+num of constraints 8500
+
+
+
+
+constant * wire ratio 0.25
+start inline lcs
+lc_map len 32500
+num coeffs: 42500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 63.167256902s
+lc_map len 32500
+num coeffs: 42500 num lcs: 9999
+prove time 50.283653288s
+num of constraints 7500
+
+
+
+
+constant * wire ratio 0.35
+start inline lcs
+lc_map len 29500
+num coeffs: 39500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 61.35121851s
+lc_map len 29500
+num coeffs: 39500 num lcs: 9999
+prove time 49.868111415s
+num of constraints 6500
+
+
+
+
+constant * wire ratio 0.45
+start inline lcs
+lc_map len 26500
+num coeffs: 36500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 59.746583885s
+lc_map len 26500
+num coeffs: 36500 num lcs: 9999
+prove time 49.679490019s
+num of constraints 5500
+
+
+
+
+constant * wire ratio 0.55
+start inline lcs
+lc_map len 23500
+num coeffs: 33500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 58.074937559s
+lc_map len 23500
+num coeffs: 33500 num lcs: 9999
+prove time 49.354635607s
+num of constraints 4500
+
+
+
+
+constant * wire ratio 0.65
+start inline lcs
+lc_map len 20500
+num coeffs: 30500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 55.418253162s
+lc_map len 20500
+num coeffs: 30500 num lcs: 9999
+prove time 48.307360315s
+num of constraints 3500
+
+
+
+
+constant * wire ratio 0.75
+start inline lcs
+lc_map len 17500
+num coeffs: 27500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 53.661524505s
+lc_map len 17500
+num coeffs: 27500 num lcs: 9999
+prove time 47.956730152s
+num of constraints 2500
+
+
+
+
+constant * wire ratio 0.85
+start inline lcs
+lc_map len 14500
+num coeffs: 24500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 51.09557915s
+lc_map len 14500
+num coeffs: 24500 num lcs: 9999
+prove time 47.121494157s
+num of constraints 1500
+
+
+
+
+constant * wire ratio 0.95
+start inline lcs
+lc_map len 11500
+num coeffs: 21500 num lcs: 9999
+finish inline lcs
+allocate a,b and c
+setup time 48.532693979s
+lc_map len 11500
+num coeffs: 21500 num lcs: 9999
+prove time 46.423004143s
+num of constraints 500
+
+
+
+
