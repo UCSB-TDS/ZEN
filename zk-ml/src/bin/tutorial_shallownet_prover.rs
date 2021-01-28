@@ -1,5 +1,4 @@
 use algebra::ed_on_bls12_381::*;
-use algebra::CanonicalDeserialize;
 use algebra::CanonicalSerialize;
 use algebra::UniformRand;
 use crypto_primitives::commitment::pedersen::Randomness;
@@ -7,7 +6,6 @@ use groth16::*;
 use r1cs_core::*;
 use std::fs::File;
 use std::io::Write;
-use std::time::{Duration, Instant};
 use zk_ml::full_circuit::*;
 use zk_ml::pedersen_commit::*;
 use zk_ml::vanilla::*;
@@ -111,14 +109,12 @@ fn main() {
     f.write_all(&buf).expect("Unable to write");
 
 
-    let pvk = prepare_verifying_key(&param.vk);
-
     // prover
     let proof = create_random_proof(full_circuit, &param, &mut rng).unwrap();
     let mut proof_buf = vec![];
     proof.serialize(&mut proof_buf).unwrap();
     let mut f = File::create("proof.data").expect("Unable to create file");
-    f.write_all((&proof_buf)).expect("Unable to write data");
+    f.write_all(&proof_buf).expect("Unable to write data");
 
     // verifier
     // let inputs = [x_com.x, x_com.y, z_com.x, z_com.y];

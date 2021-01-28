@@ -1,22 +1,11 @@
-use algebra::ed_on_bls12_381::*;
 use algebra::CanonicalDeserialize;
-use algebra::CanonicalSerialize;
-use algebra::UniformRand;
-use crypto_primitives::commitment::pedersen::Randomness;
 use groth16::*;
-use r1cs_core::*;
 use std::fs::File;
-use std::io::Write;
-use std::time::{Duration, Instant};
-use zk_ml::full_circuit::*;
 use zk_ml::pedersen_commit::*;
-use zk_ml::vanilla::*;
-use zk_ml::read_inputs::*;
-use algebra_core::ProjectiveCurve;
 
 fn main() {
 
-
+    // in fact we should use secure network transmission. here for simplicity, we write and read CRS and proof from disk.
     let mut f2 = File::open("crs.data").unwrap();
     let param: Parameters<algebra::Bls12_381> = Parameters::deserialize(&mut f2).unwrap();
     let pvk = prepare_verifying_key(&param.vk);

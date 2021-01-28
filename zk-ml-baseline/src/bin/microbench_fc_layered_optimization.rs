@@ -243,42 +243,42 @@ fn main() {
         multiplier: vec![multiplier; 100],
     };
 
-    //vec len is 256
-    // fc_256_naive
-    //     .clone()
-    //     .generate_constraints(cs11.clone())
-    //     .unwrap();
-    // println!("fc_256_naive {}", cs11.num_constraints());
-    // cs11.inline_all_lcs();
+    vec len is 256
+    fc_256_naive
+        .clone()
+        .generate_constraints(cs11.clone())
+        .unwrap();
+    println!("fc_256_naive {}", cs11.num_constraints());
+    cs11.inline_all_lcs();
 
-    // fc_256_op1
-    //     .clone()
-    //     .generate_constraints(cs12.clone())
-    //     .unwrap();
-    // println!("fc_256_op1 {}", cs12.num_constraints());
-    // cs12.inline_all_lcs();
+    fc_256_op1
+        .clone()
+        .generate_constraints(cs12.clone())
+        .unwrap();
+    println!("fc_256_op1 {}", cs12.num_constraints());
+    cs12.inline_all_lcs();
 
-    // fc_256_op2
-    //     .clone()
-    //     .generate_constraints(cs13.clone())
-    //     .unwrap();
-    // println!("fc_256_op2 {}", cs13.num_constraints());
-    // cs13.inline_all_lcs();
+    fc_256_op2
+        .clone()
+        .generate_constraints(cs13.clone())
+        .unwrap();
+    println!("fc_256_op2 {}", cs13.num_constraints());
+    cs13.inline_all_lcs();
 
-    // fc_256_op3
-    //     .clone()
-    //     .generate_constraints(cs14.clone())
-    //     .unwrap();
-    // println!("fc_256_op3 {}", cs14.num_constraints());
-    // cs14.inline_all_lcs();
+    fc_256_op3
+        .clone()
+        .generate_constraints(cs14.clone())
+        .unwrap();
+    println!("fc_256_op3 {}", cs14.num_constraints());
+    cs14.inline_all_lcs();
 
-    //vector len is 1024
-    // fc_1024_naive
-    //     .clone()
-    //     .generate_constraints(cs21.clone())
-    //     .unwrap();
-    // println!("fc_1024_naive {}", cs21.num_constraints());
-    // cs21.inline_all_lcs();
+    vector len is 1024
+    fc_1024_naive
+        .clone()
+        .generate_constraints(cs21.clone())
+        .unwrap();
+    println!("fc_1024_naive {}", cs21.num_constraints());
+    cs21.inline_all_lcs();
 
     fc_1024_op1
         .clone()
