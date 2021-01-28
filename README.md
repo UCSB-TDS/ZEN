@@ -1,5 +1,7 @@
 # ZEN: Efficient Zero-Knowledge Proof for Neural Networks
 
+![Cargo build](https://github.com/UCSB-TDS/ZEN/workflows/rust.yml/badge.svg)
+
 # Rust version
 We test the code using `rustc 1.43.0`.
 
