@@ -1,5 +1,7 @@
 # ZEN: Efficient Zero-Knowledge Proof for Neural Networks
 
+This is the codebase for our [ZEN](https://eprint.iacr.org/2021/087) paper.
+
 # Rust version
 We test the code using `rustc 1.43.0`.
 
