@@ -4,8 +4,6 @@ use crate::relu_circuit::*;
 use crate::vanilla::*;
 use crate::*;
 use algebra::ed_on_bls12_381::*;
-use algebra_core::Zero;
-use pedersen_commit::*;
 use r1cs_core::*;
 use r1cs_std::alloc::AllocVar;
 use r1cs_std::ed_on_bls12_381::FqVar;

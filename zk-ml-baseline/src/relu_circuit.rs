@@ -1,17 +1,14 @@
 use crate::*;
 use algebra::ed_on_bls12_381::*;
 use algebra_core::Zero;
-use core::cmp::Ordering;
-use num_traits::Pow;
+
 use r1cs_core::*;
 use r1cs_std::alloc::AllocVar;
 use r1cs_std::boolean::Boolean;
 use r1cs_std::ed_on_bls12_381::FqVar;
 use r1cs_std::eq::EqGadget;
 use r1cs_std::fields::fp::FpVar;
-use r1cs_std::R1CSVar;
-use r1cs_std::ToBitsGadget;
-use std::ops::*;
+
 // statement:
 //  if y_in[i] < 0, y_out[i] = 0;
 //  else y_out[i] = y_in[i]
@@ -37,7 +34,7 @@ impl ConstraintSynthesizer<Fq> for ReLUCircuit {
                     Ok(Fq::zero())
                 })
                 .unwrap();
-            if (self.y_in[i] > 0) {
+            if self.y_in[i] > 0 {
                 cmp =
                     Boolean::new_witness(r1cs_core::ns!(cs, format!("ReLU cmp_res {}", i)), || {
                         Ok(true)
@@ -79,34 +76,32 @@ pub(crate) struct ReLUCircuitU8 {
 
 impl ConstraintSynthesizer<Fq> for ReLUCircuitU8 {
     fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
-        let zero: Fq = self.y_zeropoint.into();
-        let zero_var = FqVar::Constant(zero);
         //zero point is constant wire in the circuit
         for (i, e) in self.y_in.iter().enumerate() {
-            let mut cmp;
+            let cmp;
 
-            let tmp_zero :Fq = (self.y_zeropoint as u32).into();
+            let tmp_zero: Fq = (self.y_zeropoint as u32).into();
             let zero_var = FqVar::Constant(tmp_zero);
             // cast y_out[i] as a gadget
             let tmp: Fq = (self.y_out[i] as u32).into();
             let out_var = FpVar::<Fq>::new_witness(
                 r1cs_core::ns!(cs, format!("input {}'s gadget", tmp)),
                 || Ok(tmp),
-            ).unwrap();
-
-            let tmp_in: Fq = (*e as u32).into();
-            let in_var = FpVar::<Fq>::new_witness(
-                r1cs_core::ns!(cs, format!("input 0 gadget",)),
-                || Ok(tmp_in),
             )
             .unwrap();
-            if (self.y_in[i] > self.y_zeropoint) {
+
+            let tmp_in: Fq = (*e as u32).into();
+            let in_var =
+                FpVar::<Fq>::new_witness(r1cs_core::ns!(cs, format!("input 0 gadget",)), || {
+                    Ok(tmp_in)
+                })
+                .unwrap();
+            if self.y_in[i] > self.y_zeropoint {
                 cmp =
                     Boolean::new_witness(r1cs_core::ns!(cs, format!("ReLU cmp_res {}", i)), || {
                         Ok(true)
                     })
                     .unwrap();
-
             } else {
                 cmp =
                     Boolean::new_witness(r1cs_core::ns!(cs, format!("ReLU cmp_res {}", i)), || {

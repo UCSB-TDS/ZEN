@@ -8,8 +8,8 @@ use std::fs::File;
 use std::io::Write;
 use zk_ml::full_circuit::*;
 use zk_ml::pedersen_commit::*;
-use zk_ml::vanilla::*;
 use zk_ml::read_inputs::*;
+use zk_ml::vanilla::*;
 
 fn main() {
     let mut rng = rand::thread_rng();
@@ -43,7 +43,6 @@ fn main() {
         "pretrained_model/shallownet/l2_weight_s.txt".to_string(),
         10,
     );
-
 
     let z: Vec<u8> = full_circuit_forward_u8(
         x.clone(),
@@ -97,7 +96,6 @@ fn main() {
         multiplier_l2: l2_mat_multiplier.clone(),
     };
 
-
     // pre-computed parameters
     let param =
         generate_random_parameters::<algebra::Bls12_381, _, _>(full_circuit.clone(), &mut rng)
@@ -107,7 +105,6 @@ fn main() {
     param.serialize(&mut buf).unwrap();
     let mut f = File::create("crs.data").expect("Unable to create file");
     f.write_all(&buf).expect("Unable to write");
-
 
     // prover
     let proof = create_random_proof(full_circuit, &param, &mut rng).unwrap();
@@ -120,6 +117,4 @@ fn main() {
     // let inputs = [x_com.x, x_com.y, z_com.x, z_com.y];
 
     // println!("{:?}", inputs);
-
-
 }

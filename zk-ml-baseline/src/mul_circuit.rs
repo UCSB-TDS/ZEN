@@ -12,7 +12,6 @@ use r1cs_std::eq::EqGadget;
 use r1cs_std::fields::fp::FpVar;
 use r1cs_std::R1CSVar;
 use r1cs_std::ToBitsGadget;
-use std::cmp;
 use std::ops::*;
 
 fn scala_cs_helper_fq(

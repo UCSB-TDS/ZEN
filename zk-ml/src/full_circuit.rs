@@ -44,8 +44,6 @@ pub struct FullCircuitOpLv3PedersenClassification {
 
 impl ConstraintSynthesizer<Fq> for FullCircuitOpLv3PedersenClassification {
     fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
-
-
         let full_circuit = FullCircuitOpLv3Pedersen {
             params: self.params.clone(),
             x: self.x.clone(),
@@ -107,8 +105,6 @@ pub struct FullCircuitOpLv3Pedersen {
 
 impl ConstraintSynthesizer<Fq> for FullCircuitOpLv3Pedersen {
     fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
-
-
         //x commitment
         let x_com_circuit = PedersenComCircuit {
             param: self.params.clone(),

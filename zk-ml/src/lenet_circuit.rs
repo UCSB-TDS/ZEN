@@ -308,8 +308,6 @@ pub struct LeNetCircuitU8OptimizedLv3Pedersen {
 
 impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3Pedersen {
     fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
-
-
         // x commitment
         let flattened_x3d: Vec<Vec<Vec<u8>>> = self.x.clone().into_iter().flatten().collect();
         let flattened_x2d: Vec<Vec<u8>> = flattened_x3d.into_iter().flatten().collect();
@@ -523,7 +521,6 @@ impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3Pedersen {
             cs.num_constraints()
         );
         _cir_number = cs.num_constraints();
-
 
         //relu2 layer
 

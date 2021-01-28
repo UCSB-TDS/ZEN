@@ -4,7 +4,6 @@ use std::fs::File;
 use zk_ml::pedersen_commit::*;
 
 fn main() {
-
     // in fact we should use secure network transmission. here for simplicity, we write and read CRS and proof from disk.
     let mut f2 = File::open("crs.data").unwrap();
     let param: Parameters<algebra::Bls12_381> = Parameters::deserialize(&mut f2).unwrap();

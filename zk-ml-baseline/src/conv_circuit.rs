@@ -12,7 +12,6 @@ use r1cs_std::eq::EqGadget;
 use r1cs_std::fields::fp::FpVar;
 use r1cs_std::R1CSVar;
 use r1cs_std::ToBitsGadget;
-use std::cmp;
 use std::ops::*;
 
 #[derive(Debug, Clone)]
@@ -54,7 +53,10 @@ impl ConstraintSynthesizer<Fq> for ConvCircuitOp3 {
         let m_exp_fq: Fq = (2u64.pow(M_EXP)).into();
         let m_exp_constant = FpVar::<Fq>::Constant(m_exp_fq);
         //println!("input size {} {} {} {}", batch_size, num_channels, input_height, input_width);
-        println!("kernel size {} {} {} {}", num_kernels, num_channels, kernel_size, kernel_size);
+        println!(
+            "kernel size {} {} {} {}",
+            num_kernels, num_channels, kernel_size, kernel_size
+        );
         if num_channels * kernel_size * kernel_size < SIMD_BOTTLENECK {
             //we do not use SIMD
             println!("we don't use old SIMD");

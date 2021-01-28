@@ -9,7 +9,6 @@ use r1cs_std::ed_on_bls12_381::FqVar;
 use r1cs_std::eq::EqGadget;
 use r1cs_std::fields::fp::FpVar;
 use r1cs_std::*;
-use std::cmp;
 use std::ops::*;
 
 //stranded encoding for avg pool layer
@@ -46,7 +45,7 @@ impl ConstraintSynthesizer<Fq> for AvgPoolCircuitLv3 {
         for n in 0..num_images {
             for h in 0..(input_height / self.kernel_size) {
                 for w in 0..(input_width / self.kernel_size) {
-                    for c in (0..num_channels) {
+                    for c in 0..num_channels {
                         let tmp = sum_helper_fq(
                             cs.clone(),
                             self.x[n][c].clone(),

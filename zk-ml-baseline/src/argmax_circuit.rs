@@ -1,19 +1,9 @@
 use crate::*;
 use algebra::ed_on_bls12_381::*;
-use algebra_core::biginteger::*;
-use algebra_core::Zero;
 use core::cmp::Ordering;
-use num_traits::Pow;
 use r1cs_core::*;
 use r1cs_std::alloc::AllocVar;
-use r1cs_std::boolean::Boolean;
-use r1cs_std::ed_on_bls12_381::FqVar;
-use r1cs_std::eq::EqGadget;
 use r1cs_std::fields::fp::FpVar;
-use r1cs_std::R1CSVar;
-use r1cs_std::ToBitsGadget;
-use std::cmp;
-use std::ops::*;
 
 //used in mnist and cifar10 classification problem
 #[derive(Debug, Clone)]

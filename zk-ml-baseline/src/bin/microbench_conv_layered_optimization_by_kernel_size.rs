@@ -77,7 +77,7 @@ fn main() {
         vec![vec![vec![vec![100i8; kernel_size]; kernel_size]; channel4]; out_channel4];
 
     let input1 = vec![vec![vec![vec![100u8; width]; height]; channel1]; 1];
-    let input2 = vec![vec![vec![vec![100u8; width]; height]; channel2]; 1]; 
+    let input2 = vec![vec![vec![vec![100u8; width]; height]; channel2]; 1];
     let input3 = vec![vec![vec![vec![100u8; width]; height]; channel3]; 1];
     let input4 = vec![vec![vec![vec![100u8; width]; height]; channel4]; 1];
     let input1_i8 = vec![vec![vec![vec![100i8; width]; height]; channel1]; 1];

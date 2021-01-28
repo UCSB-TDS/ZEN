@@ -243,7 +243,7 @@ fn main() {
         multiplier: vec![multiplier; 100],
     };
 
-    vec len is 256
+    //vec len is 256
     fc_256_naive
         .clone()
         .generate_constraints(cs11.clone())
@@ -272,7 +272,7 @@ fn main() {
     println!("fc_256_op3 {}", cs14.num_constraints());
     cs14.inline_all_lcs();
 
-    vector len is 1024
+    //vector len is 1024
     fc_1024_naive
         .clone()
         .generate_constraints(cs21.clone())
