@@ -3,7 +3,7 @@
 This is the codebase for our [ZEN](https://eprint.iacr.org/2021/087) paper.
 
 # Rust version
-We test the code using `rustc 1.43.0`.
+We test the code using `rustc 1.43.0`. We have noticed that some depedencies may not be able to compile under the latest `rustc 1.49.0`. Please do use the same rust version to ensure that you can build the project successfully.
 
 # Prepare Data
 * Under directory `ZEN/zk-ml-baseline/`, run `mkdir test-data` and `cargo run --bin gen_data` to generate the mock inputs for baseline and microbenchmark purposes only. For optimization level 3, we load real quantization parameters generated from `ZEN/numpyInferenceEngine/XXNet/`. For example, cd to `ZEN/numpyInferenceEngine/LeNet_CIFAR10` and run `python3.8 LeNet_end_to_end_quant.py --model LeNet_Small`. The generated quantized parameters are located at `ZEN/numpyInferenceEngine/LeNet_CIFAR10/LeNet_CIFAR_pretrained/`. For easily reproducing the results, we have saved a copy of parameters for all combinations of model and dataset in director `ZEN/zk-ml/pretrained_model/`
