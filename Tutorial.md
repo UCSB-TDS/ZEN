@@ -1,5 +1,8 @@
 # Tutorial on ZEN
 
+## This tutorial was for an old version ZEN where the NN model is public. We just update the codebase but have not changed the tutorial to the private model one yet.
+
+
 In this tutorial, we illustrate the end-to-end pipeline of converting a neural network (NN) from a pretrained PyTorch version to a ZK version. 
 In this tutorial, we will use ShallowNet on MNIST dataset for illustration.
 
