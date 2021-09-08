@@ -13,8 +13,10 @@ pub mod argmax_circuit;
 pub mod full_circuit;
 pub mod lenet_circuit;
 pub mod vanilla;
+pub mod psponge;
 
 
+pub use psponge::*;
 pub use pedersen::*;
 pub use r1cs::{PedersenComCircuit};
 pub use crate::zk_params::ZK_PARAM;
@@ -83,6 +85,7 @@ pub use ark_ed_on_bn254::{constraints::EdwardsVar, *};
 
 #[allow(unused)]
 pub const SIZEOFINPUT: usize = 32;
+pub static SIZEOFOUTPUT: usize = 2;
 
 
 
