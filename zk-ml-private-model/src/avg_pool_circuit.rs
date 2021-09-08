@@ -30,12 +30,8 @@ impl ConstraintSynthesizer<Fq> for AvgPoolCircuitLv3 {
         let input_height = self.x[0][0].len();
         let input_width = self.x[0][0][0].len();
 
-        // let delta_bits_length = 20;
-        // let delta_fq = (2u128.pow(delta_bits_length)).into();
-        // let delta = FpVar::<Fq>::Constant(delta_fq);
 
-        //let k_simd: usize = (254u32 / delta_bits_length) as usize;
-        //let k_simd: usize = 1;
+        let mut counter = 0;
         let kernel_size_fq: Fq = (self.kernel_size as u32).into();
         let kernel_size_const = FpVar::<Fq>::Constant(kernel_size_fq);
         for n in 0..num_images {
@@ -62,12 +58,13 @@ impl ConstraintSynthesizer<Fq> for AvgPoolCircuitLv3 {
                         let output_var =
                             yy_var * kernel_size_const.clone() * kernel_size_const.clone()
                                 + remainder_var;
-
+                        counter += 1;
                         tmp.enforce_equal(&output_var).unwrap();
                     }
                 }
             }
         }
+        println!("number of cmp {}", counter * kernel_size * kernel_size);
 
         Ok(())
     }
@@ -92,4 +89,58 @@ fn sum_helper_fq(
     }
 
     tmp
+}
+
+
+//stranded encoding for avg pool layer
+#[derive(Debug, Clone)]
+pub struct MaxPoolCircuitLv3 {
+    pub x: Vec<Vec<Vec<Vec<FqVar>>>>, // [Batch Size, Num Channel, Height, Width]
+    pub y: Vec<Vec<Vec<Vec<FqVar>>>>, // [Batch Size, Num Channel, Height/kernel_size, Width/kernel_size]
+    pub kernel_size: usize,
+    pub remainder: Vec<Vec<Vec<Vec<u8>>>>,
+    // we do not need the quantization parameters to calculate the avg pool output
+}
+
+impl ConstraintSynthesizer<Fq> for MaxPoolCircuitLv3 {
+    fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
+        #[cfg(debug_assertion)]
+        println!(
+            "MaxPoolCircuitU8BitDecomposeOptimized is setup mode: {}",
+            cs.is_in_setup_mode()
+        );
+
+        let num_images = self.x.len();
+        let num_channels = self.x[0].len();
+        let input_height = self.x[0][0].len();
+        let input_width = self.x[0][0][0].len();
+
+        // let delta_bits_length = 20;
+        // let delta_fq = (2u128.pow(delta_bits_length)).into();
+        // let delta = FpVar::<Fq>::Constant(delta_fq);
+
+        //let k_simd: usize = (254u32 / delta_bits_length) as usize;
+        //let k_simd: usize = 1;
+        let kernel_size_fq: Fq = (self.kernel_size as u32).into();
+        let kernel_size_const = FpVar::<Fq>::Constant(kernel_size_fq);
+        for n in 0..num_images {
+            for c in 0..num_channels {
+
+                for h in 0..(input_height / self.kernel_size) {
+                    for w in 0..(input_width / self.kernel_size) {
+
+
+                        for i in 0..kernel_size{
+                            for j in 0..kernel_size{
+                                self.y[n][c][h][w].enforce_cmp(self.x[n][c][h + ii][w + jj], Ordering::Greater, true).unwrap();
+                            }
+                        }
+
+                    }
+                
+            }
+        }
+
+        Ok(())
+    }
 }
