@@ -1,5 +1,4 @@
 
-pub mod groth_api;
 pub mod pedersen;
 pub mod r1cs;
 pub mod pedersen_params;
@@ -14,16 +13,13 @@ pub mod argmax_circuit;
 pub mod full_circuit;
 pub mod lenet_circuit;
 pub mod vanilla;
-//pub mod marlin;
 
 
-pub use groth_api::{groth_param_gen, groth_proof_gen, groth_verify};
 pub use pedersen::*;
-pub use r1cs::{sanity_check,sanity_check1, PedersenComCircuit};
+pub use r1cs::{PedersenComCircuit};
 pub use crate::zk_params::ZK_PARAM;
 pub use pedersen_params::COMMIT_PARAM;
 pub use r1cs::*;
-pub use groth_api::*;
 pub use fc_circuit::*;
 pub use conv_circuit::*;
 pub use read_inputs::*;

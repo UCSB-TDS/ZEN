@@ -8,27 +8,25 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rand_chacha = "0.2.2"
-rand = "0.7.3"
+rand_chacha = { version = "0.3.0", default-features = false }
 rand_xorshift = { version = "0.2" }
 
-ark-std = { version = "0.2.0", default-features = false }
+ark-std = { version = "0.3.0", default-features = false }
 
-ark-groth16 = { version = "0.2.0", default-features = false, features = [ "r1cs" , "parallel"] }
-ark-r1cs-std = { version = "0.2.0", default-features = false , features = [ "parallel"]}
-ark-relations = { version = "0.2.0", default-features = false }
-ark-ed-on-bls12-381 = { version = "0.2.0", default-features = false, features = [ "r1cs" ] }
-ark-bls12-381 = { version = "0.2.0", default-features = false, features = [ "curve" ] }
-ark-ed-on-bls12-377 = { version = "0.2.0", default-features = false, features = [ "r1cs" ] }
-ark-bls12-377 = { version = "0.2.0", default-features = false, features = [ "curve" ] }
-ark-ed-on-bn254 = { version = "0.2.0", default-features = false, features = [ "r1cs" ] }
-ark-bn254 = { version = "0.2.0", default-features = false, features = [ "curve" ] }
-ark-crypto-primitives = { version = "0.2.0", branch = "main", features = [ "r1cs" ] }
-ark-ff = { version = "0.2.0", default-features = false, features = [ "asm" ] }
-ark-marlin = { version = "0.2.0",  default-features = false }
-ark-poly = { version = "0.2.0", default-features = false }
-ark-poly-commit = { version = "0.2.0", default-features = false }
-ark-serialize = { version = "0.2.0", default-features = false, features = [ "derive" ] }
+ark-groth16 = { version = "0.3.0", default-features = false, features = [ "r1cs" , "parallel"] }
+ark-r1cs-std = { version = "0.3.0", default-features = false , features = [ "parallel"]}
+ark-relations = { version = "0.3.0", default-features = false }
+ark-ed-on-bls12-381 = { version = "0.3.0", default-features = false, features = [ "r1cs" ] }
+ark-bls12-381 = { version = "0.3.0", default-features = false, features = [ "curve" ] }
+ark-ed-on-bls12-377 = { version = "0.3.0", default-features = false, features = [ "r1cs" ] }
+ark-bls12-377 = { version = "0.3.0", default-features = false, features = [ "curve" ] }
+ark-ed-on-bn254 = { version = "0.3.0", default-features = false, features = [ "r1cs" ] }
+ark-bn254 = { version = "0.3.0", default-features = false, features = [ "curve" ] }
+ark-crypto-primitives = { version = "0.3.0", branch = "main", features = [ "r1cs" ] }
+ark-ff = { version = "0.3.0", default-features = false, features = [ "asm" ] }
+ark-poly = { version = "0.3.0", default-features = false }
+ark-poly-commit = { version = "0.3.0", default-features = false }
+ark-serialize = { version = "0.3.0", default-features = false, features = [ "derive" ] }
 
 
 num-traits = "0.2"

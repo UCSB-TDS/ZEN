@@ -2,7 +2,7 @@ use ark_crypto_primitives::commitment::pedersen;
 use ark_crypto_primitives::commitment::pedersen::Commitment;
 use ark_crypto_primitives::commitment::pedersen::Randomness;
 use ark_crypto_primitives::CommitmentScheme;
-use rand::SeedableRng;
+use ark_std::rand::{RngCore, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use std::cmp::*;
 
