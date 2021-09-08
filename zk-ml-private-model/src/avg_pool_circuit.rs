@@ -6,6 +6,7 @@ use r1cs_std::alloc::AllocVar;
 use r1cs_std::ed_on_bls12_381::FqVar;
 use r1cs_std::eq::EqGadget;
 use r1cs_std::fields::fp::FpVar;
+use core::cmp::Ordering;
 
 //stranded encoding for avg pool layer
 #[derive(Debug, Clone)]
@@ -64,7 +65,7 @@ impl ConstraintSynthesizer<Fq> for AvgPoolCircuitLv3 {
                 }
             }
         }
-        println!("number of cmp {}", counter * kernel_size * kernel_size);
+        println!("number of cmp {}", counter * self.kernel_size * self.kernel_size);
 
         Ok(())
     }
@@ -130,14 +131,15 @@ impl ConstraintSynthesizer<Fq> for MaxPoolCircuitLv3 {
                     for w in 0..(input_width / self.kernel_size) {
 
 
-                        for i in 0..kernel_size{
-                            for j in 0..kernel_size{
-                                self.y[n][c][h][w].enforce_cmp(self.x[n][c][h + ii][w + jj], Ordering::Greater, true).unwrap();
+                        for i in 0..self.kernel_size{
+                            for j in 0..self.kernel_size{
+                                self.y[n][c][h][w].enforce_cmp(&self.x[n][c][h + i][w + j], Ordering::Greater, true).unwrap();
                             }
                         }
 
-                    }
-                
+                        }
+                    
+                }
             }
         }
 
