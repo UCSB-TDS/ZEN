@@ -10,7 +10,8 @@ edition = "2018"
 [dependencies]
 rand_chacha = { version = "0.3.0", default-features = false }
 rand_xorshift = { version = "0.2" }
-ark-std = { version = "0.3.0", default-features = false }
+ark-std = { version = "^0.3.0", default-features = false }
+ark-ec = { version = "^0.3.0", default_features = false }
 
 ark-groth16 = { version = "0.3.0", default-features = false, features = [ "r1cs" , "parallel"] }
 ark-r1cs-std = { version = "0.3.0", default-features = false , features = [ "parallel"]}
@@ -26,6 +27,7 @@ ark-ff = { version = "0.3.0", default-features = false, features = [ "asm" ] }
 ark-poly = { version = "0.3.0", default-features = false }
 ark-poly-commit = { version = "0.3.0", default-features = false }
 ark-serialize = { version = "0.3.0", default-features = false, features = [ "derive" ] }
+ark-sponge={ version = "^0.3.0", default-features = true }
 
 
 num-traits = "0.2"
@@ -39,10 +41,4 @@ criterion = "0.3.4"
 
 blake2 = { version = "0.9", default-features = false }
 
-[features]
-#default = [ "bls12_377"]
-default = [ "bls12_381"]
-#default = [ "bn254c"]
-bn254c = [ ]
-bls12_381 = [ ]
-bls12_377 = [ ]
+
