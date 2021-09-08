@@ -55,37 +55,13 @@ pub const FACE_HEIGHT_FC1: usize = 5;
 pub const FACE_WIDTH: usize = 56;
 pub const FACE_WIDTH_FC1: usize = 8;
 
-#[cfg(feature="bls12_381")]
 use ark_bls12_381::Bls12_381;
-#[cfg(feature="bls12_381")]
 pub type CurveTypeG = Bls12_381;
-#[cfg(feature="bls12_381")]
 pub use ark_ed_on_bls12_381::*;
-#[cfg(feature="bls12_381")]
 pub use ark_ed_on_bls12_381::{constraints::EdwardsVar, *};
 
-#[cfg(feature="bls12_377")]
-use ark_bls12_377::Bls12_377;
-#[cfg(feature="bls12_377")]
-pub type CurveTypeG = Bls12_377;
-#[cfg(feature="bls12_377")]
-pub use ark_ed_on_bls12_377::*;
-#[cfg(feature="bls12_377")]
-pub use ark_ed_on_bls12_377::{constraints::EdwardsVar, *};
-
-#[cfg(feature="bn254c")]
-use ark_bn254::Bn254;
-#[cfg(feature="bn254c")]
-pub type CurveTypeG= Bn254;
-#[cfg(feature="bn254c")]
-pub use ark_ed_on_bn254::*;
-#[cfg(feature="bn254c")]
-pub use ark_ed_on_bn254::{constraints::EdwardsVar, *};
 
 
-#[allow(unused)]
-pub const SIZEOFINPUT: usize = 32;
-pub static SIZEOFOUTPUT: usize = 2;
 
 
 

@@ -5,17 +5,17 @@ use ark_relations::r1cs::SynthesisError;
 use ark_sponge::CryptographicSponge;
 use ark_sponge::FieldBasedCryptographicSponge;
 
-use ark_sponge::constraints::CryptographicSpongeVar;
+use ark_sponge::constraints::*;
 
 //use ark_relations::r1cs::ConstraintSystem;
 use ark_std::test_rng;
-//use ark_test_curves::bls12_381::Fr;
+//use ark_test_curves::bls12_381::Fq;
 
 //use ark_sponge::*;
 //use ark_sponge::poseidon::*;
 use ark_sponge::poseidon::PoseidonSponge;
 use ark_sponge::poseidon::PoseidonParameters;
-use ark_sponge::poseidon::constraints::PoseidonSpongeVar;
+use ark_sponge::poseidon::constraints::*;
 
 use ark_ff::PrimeField;
 use ark_crypto_primitives::SNARK;
@@ -27,26 +27,17 @@ use ark_relations::*;
 use ark_groth16::*;
 
 
-//use ark_ed_on_bls12_381::Fq;
-// #[cfg(feature="bls12_381")]
-// use ark_bls12_381::*;
-// #[cfg(feature="bls12_377")]
-// use ark_bls12_377::*;
-// //use ark_ed_on_bls12_381::Fr;
-
-// #[cfg(feature="bn254c")]
-// use ark_bn254::*;
 use crate::*;
 
 
 use ark_std::{rand::SeedableRng,vec::Vec};
-use crate::CurveTypeG;
-use crate::SIZEOFINPUT;
-
-//pub type tmptype= poseidon::PoseidonParameters<Fr>;
-pub type PoseidonParam =PoseidonParameters<Fr>;
-pub type SPNGFunction =PoseidonSponge<Fr>;
-pub type SPNGOutput= Vec<Fr>;
+pub type CurveTypeG = Bls12_381;
+pub static SIZEOFOUTPUT: usize = 2;
+pub const SIZEOFINPUT: usize = 32;
+//pub type tmptype= poseidon::PoseidonParameters<Fq>;
+pub type PoseidonParam =PoseidonParameters<Fq>;
+pub type SPNGFunction =PoseidonSponge<Fq>;
+pub type SPNGOutput= Vec<Fq>;
 pub type SPNGParam=<SPNGFunction as CryptographicSponge>::Parameters;
 //Poseidon<Fp256<ark_bls12_381::FrParameters>,poseidon::PoseidonRoundParams<Fp256<ark_bls12_381::FrParameters>::Default()>>;
 //pub type SPNGInput = Vec<i32>;
@@ -61,75 +52,75 @@ pub struct SPNGCircuit {
 }
 
 
-impl ConstraintSynthesizer<Fr> for SPNGCircuit{
+impl ConstraintSynthesizer<Fq> for SPNGCircuit{
 	/// Input a circuit, build the constraint system and add it to `cs`
-	fn generate_constraints(self, cs: ConstraintSystemRef<Fr>) -> Result<(), SynthesisError>{
-        let pos_param_var =  PoseidonSpongeVar::<Fr>::new(cs.clone(),&self.param);      
+	fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError>{
+        let pos_param_var =  PoseidonSpongeVar::<Fq>::new(cs.clone(),&self.param);      
         //		SPNG_circuit_helper(&self.param, &self.input, &self.output, cs,pos_param_var)?; 
 		spng_circuit_helper( self.input, &self.output, cs,pos_param_var)?;
 		Ok(())
 	}
 }
 
-//use ark_std::println;
-/// generate CRS given parameter of poseidon hash
-#[allow(dead_code)]
-pub fn groth_param_gen_s(param11: PoseidonParam) -> <Groth16<CurveTypeG> as SNARK<Fr>>::ProvingKey {
-   /* let seed =  &[32u8; 32];
-    let mut rng = ChaCha20Rng::from_seed(*seed);
-	let mut parameter = PoseidonCRH::setup(&mut rng).unwrap();  
-    parameter = poseidon_parameters_for_test1(parameter);*/
-	//let inpt = vec!(1i32,5); 
-    let seed =  &[32u8; 32];
-    let mut rng = ChaCha20Rng::from_seed(*seed);
-    //let inpt: Vec<_> = (0..4).map(|_| Fr::rand(&mut rng)).collect();
-    let inpt =[1u8;SIZEOFINPUT].to_vec();
-    let mut native_sponge = PoseidonSponge::<Fr>::new(&param11);
-    native_sponge.absorb(&inpt);
-	//let out = inp.to_sponge_field_elements_as_vec();
-    let out=native_sponge.squeeze_native_field_elements(SIZEOFOUTPUT);
-	//let out = inpt.to_sponge_field_elements_as_vec();
-	//println!("out ={:?}",out);
+// //use ark_std::println;
+// /// generate CRS given parameter of poseidon hash
+// #[allow(dead_code)]
+// pub fn groth_param_gen_s(param11: PoseidonParam) -> <Groth16<CurveTypeG> as SNARK<Fq>>::ProvingKey {
+//    /* let seed =  &[32u8; 32];
+//     let mut rng = ChaCha20Rng::from_seed(*seed);
+// 	let mut parameter = PoseidonCRH::setup(&mut rng).unwrap();  
+//     parameter = poseidon_parameters_for_test1(parameter);*/
+// 	//let inpt = vec!(1i32,5); 
+//     let seed =  &[32u8; 32];
+//     let mut rng = ChaCha20Rng::from_seed(*seed);
+//     //let inpt: Vec<_> = (0..4).map(|_| Fq::rand(&mut rng)).collect();
+//     let inpt =[1u8;SIZEOFINPUT].to_vec();
+//     let mut native_sponge = PoseidonSponge::<Fq>::new(&param11);
+//     native_sponge.absorb(&inpt);
+// 	//let out = inp.to_sponge_field_elements_as_vec();
+//     let out=native_sponge.squeeze_native_field_elements(SIZEOFOUTPUT);
+// 	//let out = inpt.to_sponge_field_elements_as_vec();
+// 	//println!("out ={:?}",out);
 
-    let circuit = SPNGCircuit {
-        param: param11,
-        input: inpt,
-        output: out,
-    };	
+//     let circuit = SPNGCircuit {
+//         param: param11,
+//         input: inpt,
+//         output: out,
+//     };	
 	
-	//let mut rng = rand::thread_rng();
-    //let mut rng = ark_std::test_rng();
+// 	//let mut rng = rand::thread_rng();
+//     //let mut rng = ark_std::test_rng();
 
-    generate_random_parameters::<CurveTypeG, _, _>(circuit, &mut rng).unwrap()
-}
+//     generate_random_parameters::<CurveTypeG, _, _>(circuit, &mut rng).unwrap()
+// }
 
-#[allow(dead_code)]
-pub fn groth_proof_gen_s(
-    param: &<Groth16<CurveTypeG> as SNARK<Fr>>::ProvingKey,
-    circuit: SPNGCircuit,
-    seed: &[u8; 32],
-) -> <Groth16<CurveTypeG> as SNARK<Fr>>::Proof {
-    let mut rng = ChaCha20Rng::from_seed(*seed);
-    create_random_proof(circuit, &param, &mut rng).unwrap()
-}
+// #[allow(dead_code)]
+// pub fn groth_proof_gen_s(
+//     param: &<Groth16<CurveTypeG> as SNARK<Fr>>::ProvingKey,
+//     circuit: SPNGCircuit,
+//     seed: &[u8; 32],
+// ) -> <Groth16<CurveTypeG> as SNARK<Fr>>::Proof {
+//     let mut rng = ChaCha20Rng::from_seed(*seed);
+//     create_random_proof(circuit, &param, &mut rng).unwrap()
+// }
 
-#[allow(dead_code)]
-pub fn groth_verify_s(
-    param: &<Groth16<CurveTypeG> as SNARK<Fr>>::ProvingKey,
-    proof: &<Groth16<CurveTypeG> as SNARK<Fr>>::Proof,
-    output: &SPNGOutput,
-) -> bool {
-    let pvk = prepare_verifying_key(&param.vk);
-	//let output_fq: Vec<Fq> = ToConstraintField::<Fq>::to_field_elements(output).unwrap();
-    verify_proof(&pvk, &proof, &output).unwrap()
-}
+// #[allow(dead_code)]
+// pub fn groth_verify_s(
+//     param: &<Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey,
+//     proof: &<Groth16<Bls12_381> as SNARK<Fq>>::Proof,
+//     output: &SPNGOutput,
+// ) -> bool {
+//     let pvk = prepare_verifying_key(&param.vk);
+// 	//let output_fq: Vec<Fq> = ToConstraintField::<Fq>::to_field_elements(output).unwrap();
+//     verify_proof(&pvk, &proof, &output).unwrap()
+// }
 
 #[allow(unused)]
 fn ttest() {
     let mut rng = test_rng();
         let cs = ConstraintSystem::new_ref();
 
-        let absorb1: Vec<_> = (0..SIZEOFINPUT).map(|_| Fr::rand(&mut rng)).collect();
+        let absorb1: Vec<_> = (0..SIZEOFINPUT).map(|_| Fq::rand(&mut rng)).collect();
         let absorb1_var: Vec<_> = absorb1
             .iter()
             .map(|v| FpVar::new_input(ns!(cs, "absorb1"), || Ok(*v)).unwrap())
@@ -137,8 +128,8 @@ fn ttest() {
 
         let sponge_params = poseidon_parameters_for_test_s();
 
-        let mut native_sponge = PoseidonSponge::<Fr>::new(&sponge_params);
-        let mut constraint_sponge = PoseidonSpongeVar::<Fr>::new(cs.clone(), &sponge_params);
+        let mut native_sponge = PoseidonSponge::<Fq>::new(&sponge_params);
+        let mut constraint_sponge = PoseidonSpongeVar::<Fq>::new(cs.clone(), &sponge_params);
 
         native_sponge.absorb(&absorb1);
         constraint_sponge.absorb(&absorb1_var).unwrap();
@@ -156,25 +147,24 @@ fn ttest() {
 use ark_r1cs_std::alloc::AllocVar;
 use rand_chacha::ChaCha20Rng;
 
-use crate::SIZEOFOUTPUT;
 fn spng_circuit_helper(
     input: SPNGInput ,
 	output: &SPNGOutput,
-	cs: ConstraintSystemRef<Fr>,
-    pos_param_var: PoseidonSpongeVar<Fr>,) -> Result<(), SynthesisError>
+	cs: ConstraintSystemRef<Fq>,
+    pos_param_var: PoseidonSpongeVar<Fq>,) -> Result<(), SynthesisError>
 {
     //let parameters_var = pos_param_var;
 	//let mut rng = test_rng();
         //let seed =  &[32u8; 32];
         //let mut rng = ChaCha20Rng::from_seed(*seed);
 
-        //let absorb2: Vec<_> = input.to_sponge_field_elements_as_vec::<Fr>(); //(0..256).map(|_| Fr::rand(&mut rng)).collect();
-        //let absorb1: Vec<_> = (0..SIZEOFINPUT).map(|_| Fr::rand(&mut rng)).collect();
+        //let absorb2: Vec<_> = input.to_sponge_field_elements_as_vec::<Fq>(); //(0..256).map(|_| Fq::rand(&mut rng)).collect();
+        //let absorb1: Vec<_> = (0..SIZEOFINPUT).map(|_| Fq::rand(&mut rng)).collect();
         let absorb1= input.clone();
 
         //println!("absorb1= {:?}", absorb1);
         //println!("absorb2= {:?}", absorb2);
-        //assert_eq!(absorb1, absorb2);
+        //assert_eq!(ab, absorb2);sorb1
 
 
         let absorb1_var: Vec<_> = absorb1
@@ -184,14 +174,14 @@ fn spng_circuit_helper(
 
         let sponge_params = poseidon_parameters_for_test_s();
 
-        let mut native_sponge = PoseidonSponge::<Fr>::new(&sponge_params);
-        let mut constraint_sponge = pos_param_var;// PoseidonSpongeVar::<Fr>::new(cs.clone(), &sponge_params);// pos_param_var;// PoseidonSpongeVar::<Fr>::new(cs.clone(), &sponge_params);
+        let mut native_sponge = PoseidonSponge::<Fq>::new(&sponge_params);
+        let mut constraint_sponge = pos_param_var;// PoseidonSpongeVar::<Fq>::new(cs.clone(), &sponge_params);// pos_param_var;// PoseidonSpongeVar::<Fq>::new(cs.clone(), &sponge_params);
 
         native_sponge.absorb(&absorb1);
         constraint_sponge.absorb(&absorb1_var).unwrap();
 
         //let squeeze1 = native_sponge.squeeze_native_field_elements(Sizeofoutput);
-        let squeeze2 = constraint_sponge.squeeze_field_elements(SIZEOFOUTPUT).unwrap();
+        let squeeze2 = constraint_sponge.squeeze_field_elements(input.len() / 32 + 1).unwrap();
         let outputvar: Vec<_>=output.iter()
         .map(|v| FpVar::new_input(ns!(cs, "absorb1"), || Ok(*v)).unwrap())
         .collect();

@@ -9,12 +9,8 @@ use std::cmp::*;
 //=======================
 // curves: JubJub and BLS
 //=======================
-#[cfg(feature="bls12_381")]
 pub type JubJub = ark_ed_on_bls12_381::EdwardsProjective;
-#[cfg(feature="bls12_377")]
-pub type JubJub = ark_ed_on_bls12_377::EdwardsProjective;
-#[cfg(feature="bn254c")]
-pub type JubJub = ark_ed_on_bn254::EdwardsProjective;
+
 //=======================
 // pedersen hash and related defintions
 // the hash function is defined over the JubJub curve
