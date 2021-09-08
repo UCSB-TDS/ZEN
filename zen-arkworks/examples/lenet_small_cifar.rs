@@ -1,5 +1,7 @@
 use std::time::Instant;
 use pedersen_example::*;
+use ark_serialize::CanonicalSerialize;
+
 use ark_serialize::CanonicalDeserialize;
 use ark_ff::UniformRand;
 use ark_groth16::*;
@@ -7,8 +9,9 @@ use ark_crypto_primitives::{commitment::pedersen::Randomness, SNARK};
 use ark_bls12_381::Bls12_381;
 use pedersen_example::full_circuit::convert_2d_vector_into_1d;
 
+use ark_std::test_rng;
 fn main() {
-    let mut rng = rand::thread_rng();
+    let mut rng = test_rng();
 
     println!("LeNet optimized small on CIFAR dataset");
     let x: Vec<Vec<Vec<Vec<u8>>>> = read_vector4d(
@@ -157,7 +160,7 @@ fn main() {
     //println!("x outside {:?}", x.clone());
     //println!("z outside {:?}", flattened_z1d.clone());
     let begin = Instant::now();
-    let param = setup(&[0; 32]);
+    let param = pedersen_setup(&[0; 32]);
     let x_open = Randomness(Fr::rand(&mut rng));
     let x_com = pedersen_commit(&flattened_x1d, &param, &x_open);
 

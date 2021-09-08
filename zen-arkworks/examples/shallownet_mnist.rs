@@ -1,13 +1,16 @@
 use std::time::Instant;
 use pedersen_example::*;
 use ark_serialize::CanonicalDeserialize;
+use ark_serialize::CanonicalSerialize;
+
 use ark_ff::UniformRand;
 use ark_groth16::*;
 use ark_crypto_primitives::{commitment::pedersen::Randomness, SNARK};
 use ark_bls12_381::Bls12_381;
-
+use crate::full_circuit::convert_2d_vector_into_1d;
+use ark_std::test_rng;
 fn main() {
-    let mut rng = rand::thread_rng();
+    let mut rng = test_rng();
     //let (x, l1_mat, l2_mat): (Vec<u8>, Vec<Vec<u8>>, Vec<Vec<u8>>) = read_shallownet_inputs_u8();
     let x: Vec<u8> = read_vector1d("pretrained_model/shallownet/X_q.txt".to_string(), 784); // only read one image
     let l1_mat: Vec<Vec<u8>> = read_vector2d(

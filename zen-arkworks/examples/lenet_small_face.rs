@@ -1,16 +1,17 @@
 use std::time::Instant;
 use pedersen_example::*;
 use ark_serialize::CanonicalDeserialize;
+use ark_serialize::CanonicalSerialize;
+
 use ark_ff::UniformRand;
 use ark_groth16::*;
 use ark_crypto_primitives::{commitment::pedersen::Randomness, SNARK};
 use ark_bls12_381::Bls12_381;
 use pedersen_example::full_circuit::convert_2d_vector_into_1d;
 
-
-
+use ark_std::test_rng;
 fn main() {
-    let mut rng = rand::thread_rng();
+    let mut rng = test_rng();
 
     let x: Vec<Vec<Vec<Vec<u8>>>> = read_vector4d(
         "pretrained_model/LeNet_ORL_pretrained/X_q.txt".to_string(),
@@ -20,36 +21,35 @@ fn main() {
         46,
     ); // only read one image
     let conv1_w: Vec<Vec<Vec<Vec<u8>>>> = read_vector4d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv1_weight_q.txt".to_string(),
-        64,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv1_weight_q.txt".to_string(),
+        6,
         1,
         5,
         5,
     );
     let conv2_w: Vec<Vec<Vec<Vec<u8>>>> = read_vector4d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv2_weight_q.txt".to_string(),
-        128,
-        64,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv2_weight_q.txt".to_string(),
+        16,
+        6,
         5,
         5,
     );
     let conv3_w: Vec<Vec<Vec<Vec<u8>>>> = read_vector4d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv3_weight_q.txt".to_string(),
-        512,
-        128,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv3_weight_q.txt".to_string(),
+        120,
+        16,
         4,
         4,
     );
-
     let fc1_w: Vec<Vec<u8>> = read_vector2d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear1_weight_q.txt".to_string(),
-        256,
-        512 * 5 * 8,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear1_weight_q.txt".to_string(),
+        84,
+        120 * 5 * 8,
     );
     let fc2_w: Vec<Vec<u8>> = read_vector2d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear2_weight_q.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear2_weight_q.txt".to_string(),
         40,
-        256,
+        84,
     );
 
     let x_0: Vec<u8> = read_vector1d(
@@ -57,84 +57,82 @@ fn main() {
         1,
     );
     let conv1_output_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv1_output_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv1_output_z.txt".to_string(),
         1,
     );
     let conv2_output_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv2_output_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv2_output_z.txt".to_string(),
         1,
     );
     let conv3_output_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv3_output_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv3_output_z.txt".to_string(),
         1,
     );
     let fc1_output_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear1_output_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear1_output_z.txt".to_string(),
         1,
     );
     let fc2_output_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear2_output_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear2_output_z.txt".to_string(),
         1,
     );
 
     let conv1_weights_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv1_weight_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv1_weight_z.txt".to_string(),
         1,
     );
     let conv2_weights_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv2_weight_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv2_weight_z.txt".to_string(),
         1,
     );
     let conv3_weights_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv3_weight_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv3_weight_z.txt".to_string(),
         1,
     );
     let fc1_weights_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear1_weight_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear1_weight_z.txt".to_string(),
         1,
     );
     let fc2_weights_0: Vec<u8> = read_vector1d(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear2_weight_z.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear2_weight_z.txt".to_string(),
         1,
     );
 
     let multiplier_conv1: Vec<f32> = read_vector1d_f32(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv1_weight_s.txt".to_string(),
-        64,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv1_weight_s.txt".to_string(),
+        6,
     );
     let multiplier_conv2: Vec<f32> = read_vector1d_f32(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv2_weight_s.txt".to_string(),
-        128,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv2_weight_s.txt".to_string(),
+        16,
     );
     let multiplier_conv3: Vec<f32> = read_vector1d_f32(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_conv3_weight_s.txt".to_string(),
-        512,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_conv3_weight_s.txt".to_string(),
+        120,
     );
 
     let multiplier_fc1: Vec<f32> = read_vector1d_f32(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear1_weight_s.txt".to_string(),
-        256,
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear1_weight_s.txt".to_string(),
+        84,
     );
     let multiplier_fc2: Vec<f32> = read_vector1d_f32(
-        "pretrained_model/LeNet_ORL_pretrained/LeNet_Large_linear2_weight_s.txt".to_string(),
+        "pretrained_model/LeNet_ORL_pretrained/LeNet_Small_linear2_weight_s.txt".to_string(),
         40,
     );
+
     let person_feature_vector = read_vector1d(
         "pretrained_model/LeNet_ORL_pretrained/person_feature_vector.txt".to_string(),
         40,
     );
 
     println!("finish reading parameters");
+
     //batch size is only one for faster calculation of total constraints
     let flattened_x3d: Vec<Vec<Vec<u8>>> = x.clone().into_iter().flatten().collect();
     let flattened_x2d: Vec<Vec<u8>> = flattened_x3d.into_iter().flatten().collect();
     let flattened_x1d: Vec<u8> = flattened_x2d.into_iter().flatten().collect();
-    let begin = Instant::now();
 
-    let param = pedersen_setup(&[0u8; 32]);
-    let x_open = Randomness::<JubJub>(Fr::rand(&mut rng));
-    let x_com = pedersen_commit(&flattened_x1d, &param, &x_open);
-
+    //actually we only process one image per forward.
     let z: Vec<Vec<u8>> = lenet_circuit_forward_u8(
         x.clone(),
         conv1_w.clone(),
@@ -160,6 +158,14 @@ fn main() {
         multiplier_fc2.clone(),
     );
     let flattened_z1d: Vec<u8> = z.clone().into_iter().flatten().collect();
+    //println!("x outside {:?}", x.clone());
+    println!("z outside {:?}", flattened_z1d.clone());
+
+    let begin = Instant::now();
+    let param = pedersen_setup(&[0u8; 32]);
+    let x_open = Randomness::<JubJub>(Fr::rand(&mut rng));
+    let x_com = pedersen_commit(&flattened_x1d, &param, &x_open);
+
     let z_open = Randomness::<JubJub>(Fr::rand(&mut rng));
     let z_com = pedersen_commit(&flattened_z1d, &param, &z_open);
 
@@ -239,6 +245,7 @@ fn main() {
     };
 
 
+
     println!("start generating random parameters");
     let begin = Instant::now();
 
@@ -252,14 +259,14 @@ fn main() {
     let mut buf = vec![];
     param.serialize(&mut buf).unwrap();
     println!("crs size: {}", buf.len());
-    drop(buf);
-    
+
     let pvk = prepare_verifying_key(&param.vk);
     println!("random parameters generated!\n");
 
     // prover
     let begin = Instant::now();
     let proof = create_random_proof(full_circuit, &param, &mut rng).unwrap();
+
     let end = Instant::now();
     println!("prove time {:?}", end.duration_since(begin));
 
