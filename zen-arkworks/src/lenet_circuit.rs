@@ -504,7 +504,6 @@ impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3Pedersen {
         );
         _cir_number = cs.num_constraints();
 
-        //TODO parallelize the layer commitment?
 
         let len_per_commit = PERDERSON_WINDOW_NUM * PERDERSON_WINDOW_SIZE / 8; //for vec<u8> commitment
 
@@ -1070,6 +1069,249 @@ impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3Pedersen {
     }
 }
 
+
+#[derive(Clone)]
+pub struct LeNetCircuitU8OptimizedLv3PoseidonClassification {
+    pub params: SPNGParam,
+
+    pub x: Vec<Vec<Vec<Vec<u8>>>>,
+    pub x_squeeze: SPNGOutput,
+
+    pub conv1_weights: Vec<Vec<Vec<Vec<u8>>>>,
+    pub conv1_squeeze: SPNGOutput,
+
+    pub conv2_weights: Vec<Vec<Vec<Vec<u8>>>>,
+    pub conv2_squeeze: SPNGOutput,
+
+    pub conv3_weights: Vec<Vec<Vec<Vec<u8>>>>,
+    pub conv3_squeeze: SPNGOutput,
+
+    pub fc1_weights: Vec<Vec<u8>>,
+    pub fc1_squeeze: SPNGOutput,
+
+    pub fc2_weights: Vec<Vec<u8>>,
+    pub fc2_squeeze: SPNGOutput,
+
+    pub z: Vec<Vec<u8>>,
+    pub z_squeeze: SPNGOutput,
+
+    //zero points for quantization.
+    pub x_0: u8,
+    pub conv1_output_0: u8,
+    pub conv2_output_0: u8,
+    pub conv3_output_0: u8,
+    pub fc1_output_0: u8,
+    pub fc2_output_0: u8, // which is also lenet output(z) zero point
+
+    pub conv1_weights_0: u8,
+    pub conv2_weights_0: u8,
+    pub conv3_weights_0: u8,
+    pub fc1_weights_0: u8,
+    pub fc2_weights_0: u8,
+
+    //multiplier for quantization
+    pub multiplier_conv1: Vec<f32>,
+    pub multiplier_conv2: Vec<f32>,
+    pub multiplier_conv3: Vec<f32>,
+    pub multiplier_fc1: Vec<f32>,
+    pub multiplier_fc2: Vec<f32>,
+    //we do not need multiplier in relu and AvgPool layer
+
+    pub argmax_res: usize,
+}
+
+impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3PoseidonClassification {
+    fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
+        #[cfg(debug_assertion)]
+        println!(
+            "LeNetCircuitU8OptimizedLv3PedersenClassification is setup mode: {}",
+            cs.is_in_setup_mode()
+        );
+
+        let full_circuit = LeNetCircuitU8OptimizedLv3Poseidon {
+            params: self.params.clone(),
+            x: self.x.clone(),
+            x_squeeze: self.x_squeeze.clone(),
+            conv1_weights: self.conv1_weights.clone(),
+            conv1_squeeze: self.conv1_squeeze.clone(),
+            conv2_weights: self.conv2_weights.clone(),
+            conv2_squeeze: self.conv2_squeeze.clone(),
+            conv3_weights: self.conv3_weights.clone(),
+            conv3_squeeze: self.conv3_squeeze.clone(),
+            fc1_weights: self.fc1_weights.clone(),
+            fc1_squeeze: self.fc1_squeeze.clone(),
+            fc2_weights: self.fc2_weights.clone(),
+            fc2_squeeze: self.fc2_squeeze.clone(),
+            z: self.z.clone(),
+            z_squeeze: self.z_squeeze.clone(),
+
+            
+            //zero points for quantization.
+            x_0: self.x_0,
+            conv1_output_0: self.conv1_output_0,
+            conv2_output_0: self.conv2_output_0,
+            conv3_output_0: self.conv3_output_0,
+            fc1_output_0: self.fc1_output_0,
+            fc2_output_0: self.fc2_output_0, // which is also lenet output(z) zero point
+
+            conv1_weights_0: self.conv1_weights_0,
+            conv2_weights_0: self.conv2_weights_0,
+            conv3_weights_0: self.conv3_weights_0,
+            fc1_weights_0: self.fc1_weights_0,
+            fc2_weights_0: self.fc2_weights_0,
+
+            //multiplier for quantization
+            multiplier_conv1: self.multiplier_conv1.clone(),
+            multiplier_conv2: self.multiplier_conv2.clone(),
+            multiplier_conv3: self.multiplier_conv3.clone(),
+            multiplier_fc1: self.multiplier_fc1.clone(),
+            multiplier_fc2: self.multiplier_fc2.clone(),
+
+        };
+
+        //we only do one image in zk proof.
+        let argmax_circuit = ArgmaxCircuitU8 {
+            input: self.z[0].clone(),
+            argmax_res: self.argmax_res.clone(),
+        };
+
+        full_circuit
+            .clone()
+            .generate_constraints(cs.clone())
+            .unwrap();
+        argmax_circuit
+            .clone()
+            .generate_constraints(cs.clone())
+            .unwrap();
+
+        Ok(())
+    }
+}
+
+
+#[derive(Clone)]
+pub struct LeNetCircuitU8OptimizedLv3PoseidonRecognition {
+    pub params: SPNGParam,
+
+    pub x: Vec<Vec<Vec<Vec<u8>>>>,
+    pub x_squeeze: SPNGOutput,
+
+    pub conv1_weights: Vec<Vec<Vec<Vec<u8>>>>,
+    pub conv1_squeeze: SPNGOutput,
+
+    pub conv2_weights: Vec<Vec<Vec<Vec<u8>>>>,
+    pub conv2_squeeze: SPNGOutput,
+
+    pub conv3_weights: Vec<Vec<Vec<Vec<u8>>>>,
+    pub conv3_squeeze: SPNGOutput,
+
+    pub fc1_weights: Vec<Vec<u8>>,
+    pub fc1_squeeze: SPNGOutput,
+
+    pub fc2_weights: Vec<Vec<u8>>,
+    pub fc2_squeeze: SPNGOutput,
+
+    pub z: Vec<Vec<u8>>,
+    pub z_squeeze: SPNGOutput,
+
+    //zero points for quantization.
+    pub x_0: u8,
+    pub conv1_output_0: u8,
+    pub conv2_output_0: u8,
+    pub conv3_output_0: u8,
+    pub fc1_output_0: u8,
+    pub fc2_output_0: u8, // which is also lenet output(z) zero point
+
+    pub conv1_weights_0: u8,
+    pub conv2_weights_0: u8,
+    pub conv3_weights_0: u8,
+    pub fc1_weights_0: u8,
+    pub fc2_weights_0: u8,
+
+    //multiplier for quantization
+    pub multiplier_conv1: Vec<f32>,
+    pub multiplier_conv2: Vec<f32>,
+    pub multiplier_conv3: Vec<f32>,
+    pub multiplier_fc1: Vec<f32>,
+    pub multiplier_fc2: Vec<f32>,
+    //we do not need multiplier in relu and AvgPool layer
+
+
+    pub person_feature_vector: Vec<u8>,
+    pub threshold: u8,
+    pub result: bool,
+}
+
+impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3PoseidonRecognition {
+    fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
+        #[cfg(debug_assertion)]
+        println!(
+            "LeNetCircuitU8OptimizedLv3PedersenRecognition is setup mode: {}",
+            cs.is_in_setup_mode()
+        );
+
+        let full_circuit = LeNetCircuitU8OptimizedLv3Poseidon {
+            params: self.params.clone(),
+            x: self.x.clone(),
+            x_squeeze: self.x_squeeze.clone(),
+            conv1_weights: self.conv1_weights.clone(),
+            conv1_squeeze: self.conv1_squeeze.clone(),
+            conv2_weights: self.conv2_weights.clone(),
+            conv2_squeeze: self.conv2_squeeze.clone(),
+            conv3_weights: self.conv3_weights.clone(),
+            conv3_squeeze: self.conv3_squeeze.clone(),
+            fc1_weights: self.fc1_weights.clone(),
+            fc1_squeeze: self.fc1_squeeze.clone(),
+            fc2_weights: self.fc2_weights.clone(),
+            fc2_squeeze: self.fc2_squeeze.clone(),
+            z: self.z.clone(),
+            z_squeeze: self.z_squeeze.clone(),
+
+            
+            //zero points for quantization.
+            x_0: self.x_0,
+            conv1_output_0: self.conv1_output_0,
+            conv2_output_0: self.conv2_output_0,
+            conv3_output_0: self.conv3_output_0,
+            fc1_output_0: self.fc1_output_0,
+            fc2_output_0: self.fc2_output_0, // which is also lenet output(z) zero point
+
+            conv1_weights_0: self.conv1_weights_0,
+            conv2_weights_0: self.conv2_weights_0,
+            conv3_weights_0: self.conv3_weights_0,
+            fc1_weights_0: self.fc1_weights_0,
+            fc2_weights_0: self.fc2_weights_0,
+
+            //multiplier for quantization
+            multiplier_conv1: self.multiplier_conv1.clone(),
+            multiplier_conv2: self.multiplier_conv2.clone(),
+            multiplier_conv3: self.multiplier_conv3.clone(),
+            multiplier_fc1: self.multiplier_fc1.clone(),
+            multiplier_fc2: self.multiplier_fc2.clone(),
+
+
+        };
+
+        //we only do one image in zk proof.
+        let similarity_circuit = CosineSimilarityCircuitU8 {
+            vec1: self.z[0].clone(),
+            vec2: self.person_feature_vector.clone(),
+            threshold: self.threshold,
+            result: self.result,
+        };
+
+        full_circuit
+            .clone()
+            .generate_constraints(cs.clone())
+            .unwrap();
+        similarity_circuit
+            .clone()
+            .generate_constraints(cs.clone())
+            .unwrap();
+
+        Ok(())
+    }
+}
 
 
 

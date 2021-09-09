@@ -343,6 +343,71 @@ impl ConstraintSynthesizer<Fq> for FullCircuitOpLv3Pedersen {
 
 
 #[derive(Clone)]
+pub struct FullCircuitOpLv3PoseidonClassification {
+    pub params: SPNGParam,
+
+    pub x: Vec<u8>,
+    pub x_squeeze: SPNGOutput,
+    pub l1: Vec<Vec<u8>>,
+    pub l1_squeeze: SPNGOutput,
+    pub l2: Vec<Vec<u8>>,
+    pub l2_squeeze: SPNGOutput,
+    pub z: Vec<u8>,
+    pub z_squeeze: SPNGOutput,
+
+    pub x_0: u8,
+    pub y_0: u8,
+    pub z_0: u8,
+    pub l1_mat_0: u8,
+    pub l2_mat_0: u8,
+    pub multiplier_l1: Vec<f32>,
+    pub multiplier_l2: Vec<f32>,
+
+    pub argmax_res: usize
+}
+
+impl ConstraintSynthesizer<Fq> for FullCircuitOpLv3PoseidonClassification {
+    fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError> {
+        let full_circuit = FullCircuitOpLv3Poseidon {
+            params: self.params.clone(),
+            x: self.x.clone(),
+            x_squeeze: self.x_squeeze.clone(),
+            l1: self.l1,
+            l1_squeeze: self.l1_squeeze.clone(),
+            l2: self.l2,
+            l2_squeeze: self.l2_squeeze.clone(),
+            z: self.z.clone(),
+            z_squeeze: self.z_squeeze.clone(),
+            
+
+            x_0: self.x_0,
+            y_0: self.y_0,
+            z_0: self.z_0,
+            l1_mat_0: self.l1_mat_0,
+            l2_mat_0: self.l2_mat_0,
+            multiplier_l1: self.multiplier_l1.clone(),
+            multiplier_l2: self.multiplier_l2.clone(),
+        };
+
+        let argmax_circuit = ArgmaxCircuitU8 {
+            input: self.z.clone(),
+            argmax_res: self.argmax_res.clone(),
+        };
+
+        full_circuit
+            .clone()
+            .generate_constraints(cs.clone())
+            .unwrap();
+        argmax_circuit
+            .clone()
+            .generate_constraints(cs.clone())
+            .unwrap();
+
+        Ok(())
+    }
+}
+
+#[derive(Clone)]
 pub struct FullCircuitOpLv3Poseidon {
     pub params: SPNGParam,
 

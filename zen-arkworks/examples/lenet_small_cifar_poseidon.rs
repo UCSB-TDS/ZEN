@@ -201,7 +201,7 @@ fn main() {
     //we only do one image in zk proof.
     let classification_res = argmax_u8(z[0].clone());
 
-    let full_circuit = LeNetCircuitU8OptimizedLv3Poseidon{
+    let full_circuit = LeNetCircuitU8OptimizedLv3PoseidonClassification{
         params: parameter.clone(),
         x: x.clone(),
         x_squeeze: x_squeeze.clone(),
@@ -244,6 +244,8 @@ fn main() {
         multiplier_conv3: multiplier_conv3.clone(),
         multiplier_fc1: multiplier_fc1.clone(),
         multiplier_fc2: multiplier_fc2.clone(),
+        
+        argmax_res: classification_res,
 
         
 

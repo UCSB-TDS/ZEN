@@ -204,9 +204,11 @@ fn main() {
     let end = Instant::now();
     println!("commit time {:?}", end.duration_since(begin));
     //we only do one image in zk proof.
-    let classification_res = argmax_u8(z[0].clone());
+    let is_the_same_person: bool =
+    cosine_similarity(z[0].clone(), person_feature_vector.clone(), 50);
+    println!("is the same person ? {}", is_the_same_person);
 
-    let full_circuit = LeNetCircuitU8OptimizedLv3Poseidon{
+    let full_circuit = LeNetCircuitU8OptimizedLv3PoseidonRecognition{
         params: parameter.clone(),
         x: x.clone(),
         x_squeeze: x_squeeze.clone(),
@@ -250,7 +252,9 @@ fn main() {
         multiplier_fc1: multiplier_fc1.clone(),
         multiplier_fc2: multiplier_fc2.clone(),
 
-        
+        person_feature_vector: person_feature_vector.clone(),
+        threshold: 50,
+        result: is_the_same_person,
 
     };
 

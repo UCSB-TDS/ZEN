@@ -87,8 +87,9 @@ fn main() {
     // println!("l1_squeeze len {}", l1_squeeze.len());
     // println!("l2_squeeze len {}", l2_squeeze.len());
     // println!("z_squeeze len {}", z_squeeze.len());
+    let classification_res = argmax_u8(z.clone());
 
-    let full_circuit = FullCircuitOpLv3Poseidon {
+    let full_circuit = FullCircuitOpLv3PoseidonClassification {
         params: parameter.clone(),
         x: x.clone(),
         x_squeeze: x_squeeze.clone(),
@@ -98,6 +99,7 @@ fn main() {
         l2_squeeze: l2_squeeze.clone(),
         z: z.clone(),
         z_squeeze: z_squeeze.clone(),
+        argmax_res: classification_res,
 
         x_0: x_0[0],
         y_0: l1_output_0[0],
