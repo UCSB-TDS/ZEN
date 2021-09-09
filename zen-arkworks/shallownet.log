@@ -1,0 +1,26 @@
+start generating random parameters
+Number of constraints for x commitment 12917
+Number of constraints for l1 commitment 1650503
+Number of constraints for l2 commitment 21141
+Number of constraints for z commitment 336
+Use 4 vector SIMD in current FC layer
+Number of constraints for FC1 45440 accumulated constraints 1730337
+Number of constraints for ReLU1 384 accumulated constraints 1730721
+Use 4 vector SIMD in current FC layer
+Number of constraints for FC2 1786 accumulated constraints 1732507
+Total number of FullCircuit inference constraints 1732507
+setup time 37.469469512s
+random parameters generated!
+
+Number of constraints for x commitment 12917
+Number of constraints for l1 commitment 1650503
+Number of constraints for l2 commitment 21141
+Number of constraints for z commitment 336
+Use 4 vector SIMD in current FC layer
+Number of constraints for FC1 45440 accumulated constraints 1730337
+Number of constraints for ReLU1 384 accumulated constraints 1730721
+Use 4 vector SIMD in current FC layer
+Number of constraints for FC2 1786 accumulated constraints 1732507
+Total number of FullCircuit inference constraints 1732507
+prove time 32.630298618s
+verification time 1.053457029s

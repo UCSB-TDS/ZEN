@@ -1,0 +1,62 @@
+LeNet optimized small on ORL dataset
+finish reading parameters
+lenet vallina forward
+finish forwarding
+commit time 547.965324ms
+start generating random parameters
+Number of constraints for x commitment 42414
+lenet vallina forward
+z within circuit [128, 127, 129, 128, 129, 128, 127, 127, 128, 127, 128, 129, 127, 126, 128, 127, 127, 128, 127, 128, 128, 127, 127, 128, 127, 128, 126, 127, 128, 126, 127, 127, 126, 127, 128, 129, 126, 127, 126, 128]
+Number of constraints for z commitment 582 accumulated constraints 42996
+Number of constraints for conv1 layer commitment 2525 accumulated constraints 45521
+Number of constraints for conv2 layer commitment 41936 accumulated constraints 84932
+Number of constraints for conv3 layer commitment 547292 accumulated constraints 590288
+Number of constraints for fc1 layer commitment 7178548 accumulated constraints 7221544
+Number of constraints for fc2 layer commitment 55336 accumulated constraints 7276880
+we don't use old SIMD
+Number of constraints for Conv1 396040 accumulated constraints 7617584
+Number of constraints for Relu1 39312 accumulated constraints 7656896
+Number of constraints for AvgPool1 3276 accumulated constraints 7660172
+we don't use old SIMD
+Number of constraints for Conv2 903584 accumulated constraints 8563756
+Number of constraints for Relu2 17952 accumulated constraints 8581708
+Number of constraints for AvgPool2 1408 accumulated constraints 8583116
+OLD SIMD conv among multiple kernel positions on image
+Number of constraints for Conv3 1103040 accumulated constraints 9686156
+Number of constraints for Relu3 14400 accumulated constraints 9700556
+Use 3 vector SIMD in current FC layer
+Number of constraints FC1 152180 accumulated constraints 9852736
+Number of constraints for Relu4 252 accumulated constraints 9852988
+Use 4 vector SIMD in current FC layer
+Number of constraints FC2 7200 accumulated constraints 9860188
+setup time 308.371204081s
+crs size: 3283398240
+random parameters generated!
+
+Number of constraints for x commitment 42414
+lenet vallina forward
+z within circuit [128, 127, 129, 128, 129, 128, 127, 127, 128, 127, 128, 129, 127, 126, 128, 127, 127, 128, 127, 128, 128, 127, 127, 128, 127, 128, 126, 127, 128, 126, 127, 127, 126, 127, 128, 129, 126, 127, 126, 128]
+Number of constraints for z commitment 582 accumulated constraints 42996
+Number of constraints for conv1 layer commitment 2525 accumulated constraints 45521
+Number of constraints for conv2 layer commitment 41936 accumulated constraints 84932
+Number of constraints for conv3 layer commitment 547292 accumulated constraints 590288
+Number of constraints for fc1 layer commitment 7178548 accumulated constraints 7221544
+Number of constraints for fc2 layer commitment 55336 accumulated constraints 7276880
+we don't use old SIMD
+Number of constraints for Conv1 396040 accumulated constraints 7617584
+Number of constraints for Relu1 39312 accumulated constraints 7656896
+Number of constraints for AvgPool1 3276 accumulated constraints 7660172
+we don't use old SIMD
+Number of constraints for Conv2 903584 accumulated constraints 8563756
+Number of constraints for Relu2 17952 accumulated constraints 8581708
+Number of constraints for AvgPool2 1408 accumulated constraints 8583116
+OLD SIMD conv among multiple kernel positions on image
+Number of constraints for Conv3 1103040 accumulated constraints 9686156
+Number of constraints for Relu3 14400 accumulated constraints 9700556
+Use 3 vector SIMD in current FC layer
+Number of constraints FC1 152180 accumulated constraints 9852736
+Number of constraints for Relu4 252 accumulated constraints 9852988
+Use 4 vector SIMD in current FC layer
+Number of constraints FC2 7200 accumulated constraints 9860188
+prove time 294.430663392s
+verification time 4.477957586s
