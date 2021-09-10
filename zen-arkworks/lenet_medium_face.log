@@ -2,7 +2,8 @@ LeNet optimized medium on ORL dataset
 finish reading parameters
 lenet vallina forward
 finish forwarding
-commit time 1.998398107s
+commit time 2.037196539s
+is the same person ? true
 start generating random parameters
 Number of constraints for x commitment 42414
 lenet vallina forward
@@ -29,8 +30,9 @@ Number of constraints FC1 477232 accumulated constraints 44194306
 Number of constraints for Relu4 384 accumulated constraints 44194690
 Use 4 vector SIMD in current FC layer
 Number of constraints FC2 7640 accumulated constraints 44202330
-setup time 2272.034311041s
-crs size: 14139719904
+Number of constraints for CosineSimilarity Circuit 2017, Accumulated constraints 44204347
+setup time 2319.017722761s
+crs size: 14140173504
 random parameters generated!
 
 Number of constraints for x commitment 42414
@@ -58,5 +60,6 @@ Number of constraints FC1 477232 accumulated constraints 44194306
 Number of constraints for Relu4 384 accumulated constraints 44194690
 Use 4 vector SIMD in current FC layer
 Number of constraints FC2 7640 accumulated constraints 44202330
-prove time 2242.466604415s
-verification time 16.49606641s
+Number of constraints for CosineSimilarity Circuit 2017, Accumulated constraints 44204347
+prove time 2264.177321902s
+verification time 16.872297446s

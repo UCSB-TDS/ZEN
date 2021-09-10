@@ -9,7 +9,8 @@ Number of constraints for ReLU1 384 accumulated constraints 1730721
 Use 4 vector SIMD in current FC layer
 Number of constraints for FC2 1786 accumulated constraints 1732507
 Total number of FullCircuit inference constraints 1732507
-setup time 37.469469512s
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 1751457
+setup time 37.488868125s
 random parameters generated!
 
 Number of constraints for x commitment 12917
@@ -22,5 +23,6 @@ Number of constraints for ReLU1 384 accumulated constraints 1730721
 Use 4 vector SIMD in current FC layer
 Number of constraints for FC2 1786 accumulated constraints 1732507
 Total number of FullCircuit inference constraints 1732507
-prove time 32.630298618s
-verification time 1.053457029s
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 1751457
+prove time 32.244837801s
+verification time 1.056416867s

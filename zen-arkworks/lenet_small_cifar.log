@@ -2,7 +2,7 @@ LeNet optimized small on CIFAR dataset
 finish reading parameters
 lenet vallina forward
 finish forwarding
-commit time 96.309975ms
+commit time 97.257205ms
 start generating random parameters
 Number of constraints for x commitment 50638
 lenet vallina forward
@@ -29,8 +29,9 @@ Number of constraints FC1 23436 accumulated constraints 2032012
 Number of constraints for Relu4 252 accumulated constraints 2032264
 Use 4 vector SIMD in current FC layer
 Number of constraints FC2 1610 accumulated constraints 2033874
-setup time 46.88930151s
-crs size: 613631088
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 2052824
+setup time 46.215336827s
+crs size: 617293728
 random parameters generated!
 
 Number of constraints for x commitment 50638
@@ -58,5 +59,6 @@ Number of constraints FC1 23436 accumulated constraints 2032012
 Number of constraints for Relu4 252 accumulated constraints 2032264
 Use 4 vector SIMD in current FC layer
 Number of constraints FC2 1610 accumulated constraints 2033874
-prove time 42.100641703s
-verification time 788.688952ms
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 2052824
+prove time 41.714727933s
+verification time 798.940095ms
