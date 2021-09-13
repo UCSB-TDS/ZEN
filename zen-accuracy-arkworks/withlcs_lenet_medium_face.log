@@ -1,0 +1,19 @@
+LeNet optimized medium on ORL dataset
+finish reading parameters
+lenet vallina forward
+finish forwarding
+commit time 2.066843583s
+start generating random parameters
+Number of constraints for conv1 layer commitment 13311 accumulated constraints 13311
+Number of constraints for conv2 layer commitment 855397 accumulated constraints 855397
+Number of constraints for conv3 layer commitment 5166862 accumulated constraints 5166862
+Number of constraints for fc1 layer commitment 26723143 accumulated constraints 26723143
+Number of constraints for fc2 layer commitment 84311 accumulated constraints 26807454
+we don't use old SIMD
+OLD SIMD conv among multiple kernel positions on image
+OLD SIMD conv among multiple kernel positions on image
+Use 3 vector SIMD in current FC layer
+Use 4 vector SIMD in current FC layer
+Number of constraints for CosineSimilarity Circuit 2017, Accumulated constraints 44161354
+Total number of LeNetCircuit Classification constraints 44161355
+before 324776057

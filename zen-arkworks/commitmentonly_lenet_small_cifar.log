@@ -1,0 +1,34 @@
+LeNet optimized small on CIFAR dataset
+finish reading parameters
+lenet vallina forward
+finish forwarding
+commit time 98.887216ms
+start generating random parameters
+Number of constraints for x commitment 50638
+lenet vallina forward
+z within circuit [123, 123, 137, 149, 131, 144, 135, 123, 131, 120]
+Number of constraints for z commitment 336 accumulated constraints 50974
+Number of constraints for conv1 layer commitment 7585 accumulated constraints 58559
+Number of constraints for conv2 layer commitment 46996 accumulated constraints 97970
+Number of constraints for conv3 layer commitment 552352 accumulated constraints 603326
+Number of constraints for fc1 layer commitment 1215633 accumulated constraints 1266607
+Number of constraints for fc2 layer commitment 13897 accumulated constraints 1280504
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 1299454
+before 5551061
+setup time 45.029903956s
+crs size: 411647568
+random parameters generated!
+
+Number of constraints for x commitment 50638
+lenet vallina forward
+z within circuit [123, 123, 137, 149, 131, 144, 135, 123, 131, 120]
+Number of constraints for z commitment 336 accumulated constraints 50974
+Number of constraints for conv1 layer commitment 7585 accumulated constraints 58559
+Number of constraints for conv2 layer commitment 46996 accumulated constraints 97970
+Number of constraints for conv3 layer commitment 552352 accumulated constraints 603326
+Number of constraints for fc1 layer commitment 1215633 accumulated constraints 1266607
+Number of constraints for fc2 layer commitment 13897 accumulated constraints 1280504
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 1299454
+before 5551061
+prove time 31.619394341s
+verification time 808.754904ms

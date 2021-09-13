@@ -1,0 +1,64 @@
+LeNet optimized small on CIFAR dataset
+finish reading parameters
+lenet vallina forward
+finish forwarding
+commit time 103.672597ms
+start generating random parameters
+Number of constraints for x commitment 50638
+lenet vallina forward
+z within circuit [123, 123, 137, 149, 131, 144, 135, 123, 131, 120]
+Number of constraints for z commitment 336 accumulated constraints 50974
+Number of constraints for conv1 layer commitment 7585 accumulated constraints 58559
+Number of constraints for conv2 layer commitment 46996 accumulated constraints 97970
+Number of constraints for conv3 layer commitment 552352 accumulated constraints 603326
+Number of constraints for fc1 layer commitment 1215633 accumulated constraints 1266607
+Number of constraints for fc2 layer commitment 13897 accumulated constraints 1280504
+we don't use old SIMD
+Number of constraints for Conv1 371401 accumulated constraints 1638008
+Number of constraints for Relu1 14112 accumulated constraints 1652120
+Number of constraints for AvgPool1 1176 accumulated constraints 1653296
+we don't use old SIMD
+Number of constraints for Conv2 241600 accumulated constraints 1894896
+Number of constraints for Relu2 4800 accumulated constraints 1899696
+Number of constraints for AvgPool2 400 accumulated constraints 1900096
+OLD SIMD conv among multiple kernel channels because now input is too small.
+Number of constraints for Conv3 107040 accumulated constraints 2007136
+Number of constraints for Relu3 1440 accumulated constraints 2008576
+Use 4 vector SIMD in current FC layer
+Number of constraints FC1 23436 accumulated constraints 2032012
+Number of constraints for Relu4 252 accumulated constraints 2032264
+Use 4 vector SIMD in current FC layer
+Number of constraints FC2 1610 accumulated constraints 2033874
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 2052824
+before 11869681
+setup time 100.733956613s
+crs size: 617293728
+random parameters generated!
+
+Number of constraints for x commitment 50638
+lenet vallina forward
+z within circuit [123, 123, 137, 149, 131, 144, 135, 123, 131, 120]
+Number of constraints for z commitment 336 accumulated constraints 50974
+Number of constraints for conv1 layer commitment 7585 accumulated constraints 58559
+Number of constraints for conv2 layer commitment 46996 accumulated constraints 97970
+Number of constraints for conv3 layer commitment 552352 accumulated constraints 603326
+Number of constraints for fc1 layer commitment 1215633 accumulated constraints 1266607
+Number of constraints for fc2 layer commitment 13897 accumulated constraints 1280504
+we don't use old SIMD
+Number of constraints for Conv1 371401 accumulated constraints 1638008
+Number of constraints for Relu1 14112 accumulated constraints 1652120
+Number of constraints for AvgPool1 1176 accumulated constraints 1653296
+we don't use old SIMD
+Number of constraints for Conv2 241600 accumulated constraints 1894896
+Number of constraints for Relu2 4800 accumulated constraints 1899696
+Number of constraints for AvgPool2 400 accumulated constraints 1900096
+OLD SIMD conv among multiple kernel channels because now input is too small.
+Number of constraints for Conv3 107040 accumulated constraints 2007136
+Number of constraints for Relu3 1440 accumulated constraints 2008576
+Use 4 vector SIMD in current FC layer
+Number of constraints FC1 23436 accumulated constraints 2032012
+Number of constraints for Relu4 252 accumulated constraints 2032264
+Use 4 vector SIMD in current FC layer
+Number of constraints FC2 1610 accumulated constraints 2033874
+Number of constraints for ArgmaxCircuitU8 Circuit 18950, Accumulated constraints 2052824
+before 11869681

@@ -1,0 +1,18 @@
+LeNet optimized medium on CIFAR dataset
+finish reading parameters
+lenet vallina forward
+finish forwarding
+commit time 7.948660729s
+is the same person ? true
+start generating random parameters
+Number of constraints for x commitment 42414
+lenet vallina forward
+z within circuit [127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127]
+Number of constraints for z commitment 582 accumulated constraints 42996
+Number of constraints for conv1 layer commitment 26361 accumulated constraints 69357
+Number of constraints for conv2 layer commitment 3394717 accumulated constraints 3437713
+Number of constraints for conv3 layer commitment 20639794 accumulated constraints 20682790
+Number of constraints for fc1 layer commitment 106864665 accumulated constraints 106907661
+Number of constraints for fc2 layer commitment 168626 accumulated constraints 107076287
+Number of constraints for CosineSimilarity Circuit 2017, Accumulated constraints 107078304
+before 459346554

@@ -1,0 +1,8 @@
+start generating random parameters
+Number of constraints for l1 commitment 1650503
+Number of constraints for l2 commitment 21141
+Number of constraints for accuracy result commitment 264 accumulated constraints 1671908
+Use 4 vector SIMD in current FC layer
+Use 4 vector SIMD in current FC layer
+Total number of FullCircuit inference constraints 1738472
+before 7682359
