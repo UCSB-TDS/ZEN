@@ -1,5 +1,5 @@
 use std::time::Instant;
-use pedersen_example::*;
+use zen_accuracy_arkworks::*;
 use ark_serialize::CanonicalDeserialize;
 use ark_serialize::CanonicalSerialize;
 
@@ -7,9 +7,9 @@ use ark_ff::UniformRand;
 use ark_groth16::*;
 use ark_crypto_primitives::{commitment::pedersen::Randomness, SNARK};
 use ark_bls12_381::Bls12_381;
-use crate::full_circuit::convert_2d_vector_into_1d;
 use ark_std::test_rng;
 use ark_sponge::{ CryptographicSponge, FieldBasedCryptographicSponge, poseidon::PoseidonSponge};
+use crate::full_circuit::*;
 
 fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>())
@@ -96,8 +96,6 @@ fn main() {
         accuracy_squeeze.push(tmp_acc_squeeze);
     }
 
-    let end = Instant::now();
-    println!("commit time {:?}", end.duration_since(begin));
 
     //for current machine, we only process one batch
     let x_current_batch: Vec<Vec<u8>> = (&x[0..batch_size]).iter().cloned().collect();
@@ -145,14 +143,19 @@ fn main() {
 
     //aggregate multiple previous inference circuit output
     //(for simplicity, we directly use the commitment of accuracy results to check whether the number of correct prediction is correct)
-    let accuracy_sumcheck_circuit = PedersenComAccuracyCircuit {
-        param: param.clone(),
-        input: accuracy_input.clone(),
-        open: accuracy_open.clone(),
-        commit: accuracy_com.clone(),
-        num_of_correct_prediction: num_of_correct_prediction,
-    };
 
+    let mut acc_sponge2 = PoseidonSponge::< >::new(&parameter);
+
+    acc_sponge2.absorb(&accuracy_results);
+    let accuracy_squeeze2 : SPNGOutput = acc_sponge2.squeeze_native_field_elements(accuracy_results.clone().len() / 32 + 1);
+    
+
+    let accuracy_sumcheck_circuit = SPNGAccuracyCircuit{
+        param: parameter.clone(),   
+        input: accuracy_results.clone(),
+        output: accuracy_squeeze2.clone(),
+        num_of_correct_prediction: num_of_correct_prediction
+    };
 
 
 
@@ -160,14 +163,14 @@ fn main() {
     println!("start generating random parameters");
     let begin = Instant::now();
 
-    // pre-computed parameters
+    //pre-computed parameters
     let param =
         generate_random_parameters::<Bls12_381, _, _>(full_circuit.clone(), &mut rng)
             .unwrap();
-    let param_acc = generate_random_parameters::<algebra::Bls12_381, _, _>(
+    let param_acc = generate_random_parameters::<Bls12_381, _, _>(
         accuracy_sumcheck_circuit.clone(),
         &mut rng,
-    )
+    ).unwrap();
     let end = Instant::now();
     println!("setup time {:?}", end.duration_since(begin));
 
@@ -175,7 +178,7 @@ fn main() {
     param.serialize(&mut buf).unwrap();
     let mut buf_acc = vec![];
     param_acc.serialize(&mut buf_acc).unwrap();
-    println!("crs size: {}", buf.len() + buf_acc.len())
+    println!("crs size: {}", buf.len() + buf_acc.len() );
 
     let pvk = prepare_verifying_key(&param.vk);
     let pvk_acc = prepare_verifying_key(&param_acc.vk);
@@ -195,25 +198,18 @@ fn main() {
     let inputs = [
         l1_squeeze,
         l2_squeeze,
+        accuracy_squeeze[0].clone(),
         x_inputs,
-        true_label_input,
+        true_label_inputs
     ]
     .concat();
 
     //prepare commitment aggregated accuracy circuit inputs
-    let mut inputs_acc: Vec<Fq> = Vec::new();
     // number of correct predictions is public input for verification
-    let num_of_correct_prediction_fq: Fq = num_of_correct_prediction.into();
-    inputs_acc.push(num_of_correct_prediction_fq);
-    for i in 0..accuracy_com.len() {
-        //commitment of accuracy vector obtained from each batch inference.
-        inputs_acc.push(accuracy_com[i].x);
-        inputs_acc.push(accuracy_com[i].y);
-    }
 
     let begin = Instant::now();
     assert!(verify_proof(&pvk, &proof, &inputs[..].as_ref()).unwrap());
-    assert!(verify_proof(&pvk_acc, &proof_acc, &inputs_acc[..]).unwrap());
+    assert!(verify_proof(&pvk_acc, &proof_acc, &accuracy_squeeze2).unwrap());
     let end = Instant::now();
     println!("verification time {:?}", end.duration_since(begin));
 }

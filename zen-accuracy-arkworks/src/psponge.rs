@@ -26,6 +26,7 @@ use ark_relations::r1cs::ConstraintSystem;
 use ark_relations::*;
 use ark_groth16::*;
 
+use ark_ed_on_bls12_381::{constraints::FqVar, EdwardsParameters, Fq};
 
 use crate::*;
 
@@ -57,63 +58,83 @@ impl ConstraintSynthesizer<Fq> for SPNGCircuit{
 	fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError>{
         let pos_param_var =  PoseidonSpongeVar::<Fq>::new(cs.clone(),&self.param);      
         //		SPNG_circuit_helper(&self.param, &self.input, &self.output, cs,pos_param_var)?; 
+        
 		spng_circuit_helper( self.input, &self.output, cs,pos_param_var)?;
 		Ok(())
 	}
 }
 
-// //use ark_std::println;
-// /// generate CRS given parameter of poseidon hash
-// #[allow(dead_code)]
-// pub fn groth_param_gen_s(param11: PoseidonParam) -> <Groth16<CurveTypeG> as SNARK<Fq>>::ProvingKey {
-//    /* let seed =  &[32u8; 32];
-//     let mut rng = ChaCha20Rng::from_seed(*seed);
-// 	let mut parameter = PoseidonCRH::setup(&mut rng).unwrap();  
-//     parameter = poseidon_parameters_for_test1(parameter);*/
-// 	//let inpt = vec!(1i32,5); 
-//     let seed =  &[32u8; 32];
-//     let mut rng = ChaCha20Rng::from_seed(*seed);
-//     //let inpt: Vec<_> = (0..4).map(|_| Fq::rand(&mut rng)).collect();
-//     let inpt =[1u8;SIZEOFINPUT].to_vec();
-//     let mut native_sponge = PoseidonSponge::<Fq>::new(&param11);
-//     native_sponge.absorb(&inpt);
-// 	//let out = inp.to_sponge_field_elements_as_vec();
-//     let out=native_sponge.squeeze_native_field_elements(SIZEOFOUTPUT);
-// 	//let out = inpt.to_sponge_field_elements_as_vec();
-// 	//println!("out ={:?}",out);
 
-//     let circuit = SPNGCircuit {
-//         param: param11,
-//         input: inpt,
-//         output: out,
-//     };	
-	
-// 	//let mut rng = rand::thread_rng();
-//     //let mut rng = ark_std::test_rng();
+fn generate_fqvar(cs: ConstraintSystemRef<Fq>, input: Vec<u8>) -> Vec<FqVar> {
+    let mut res: Vec<FqVar> = Vec::new();
+    for i in 0..input.len() {
+        let fq: Fq = input[i].into();
+        let tmp = FpVar::<Fq>::new_witness(ark_relations::ns!(cs, "tmp"), || Ok(fq)).unwrap();
+        res.push(tmp);
+    }
+    res
+}
 
-//     generate_random_parameters::<CurveTypeG, _, _>(circuit, &mut rng).unwrap()
-// }
+#[derive(Clone)]
+pub struct SPNGAccuracyCircuit {
+	pub param: SPNGParam,
+	pub input: Vec<u8>,
+	pub output: Vec<Fq>,
+    pub num_of_correct_prediction: u64
+}
 
-// #[allow(dead_code)]
-// pub fn groth_proof_gen_s(
-//     param: &<Groth16<CurveTypeG> as SNARK<Fr>>::ProvingKey,
-//     circuit: SPNGCircuit,
-//     seed: &[u8; 32],
-// ) -> <Groth16<CurveTypeG> as SNARK<Fr>>::Proof {
-//     let mut rng = ChaCha20Rng::from_seed(*seed);
-//     create_random_proof(circuit, &param, &mut rng).unwrap()
-// }
 
-// #[allow(dead_code)]
-// pub fn groth_verify_s(
-//     param: &<Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey,
-//     proof: &<Groth16<Bls12_381> as SNARK<Fq>>::Proof,
-//     output: &SPNGOutput,
-// ) -> bool {
-//     let pvk = prepare_verifying_key(&param.vk);
-// 	//let output_fq: Vec<Fq> = ToConstraintField::<Fq>::to_field_elements(output).unwrap();
-//     verify_proof(&pvk, &proof, &output).unwrap()
-// }
+impl ConstraintSynthesizer<Fq> for SPNGAccuracyCircuit{
+	/// Input a circuit, build the constraint system and add it to `cs`
+	fn generate_constraints(self, cs: ConstraintSystemRef<Fq>) -> Result<(), SynthesisError>{
+        let pos_param_var =  PoseidonSpongeVar::<Fq>::new(cs.clone(),&self.param);      
+        let accuracy_fq: Fq = self.num_of_correct_prediction.into();
+        let accuracy_var =
+            FpVar::<Fq>::new_witness(ark_relations::ns!(cs, "accuracy"), || Ok(accuracy_fq)).unwrap();
+        let zero_fq: Fq = 0u64.into();
+        let mut sum_of_correct_prediction =
+            FpVar::<Fq>::new_witness(ark_relations::ns!(cs, "accuracy"), || Ok(zero_fq)).unwrap();
+
+            let prediction_correctness = generate_fqvar(cs.clone(), self.input.clone());
+            for j in 0..prediction_correctness.len() {
+                sum_of_correct_prediction += prediction_correctness[j].clone();
+            }
+
+            let absorb1= self.input.clone();
+
+            let absorb1_var: Vec<_> = absorb1
+                .iter()
+                .map(|v| UInt8::new_witness(ns!(cs, "absorb1"), || Ok(*v)).unwrap())
+                .collect();
+    
+            let sponge_params = poseidon_parameters_for_test_s();
+    
+            let mut native_sponge = PoseidonSponge::<Fq>::new(&sponge_params);
+            let mut constraint_sponge = pos_param_var.clone();// PoseidonSpongeVar::<Fq>::new(cs.clone(), &sponge_params);// pos_param_var;// PoseidonSpongeVar::<Fq>::new(cs.clone(), &sponge_params);
+    
+            native_sponge.absorb(&absorb1);
+            constraint_sponge.absorb(&absorb1_var).unwrap();
+    
+            let squeeze2 = constraint_sponge.squeeze_field_elements(self.input.len() / 32 + 1).unwrap();
+            let outputvar: Vec<_>=self.output.iter()
+            .map(|v| FpVar::new_input(ns!(cs, "absorb1"), || Ok(*v)).unwrap())
+            .collect();
+             
+            squeeze2.enforce_equal(&outputvar).unwrap();
+        
+        accuracy_var
+        .enforce_equal(&sum_of_correct_prediction)
+        .unwrap();
+        
+        println!(
+            "total cs for AccuracyCommitment Circuit: {}",
+            cs.num_constraints()
+        );
+
+    
+    Ok(())
+	}
+}
 
 #[allow(unused)]
 fn ttest() {

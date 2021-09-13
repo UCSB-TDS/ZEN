@@ -11,6 +11,10 @@ use ark_relations::r1cs::{ConstraintSynthesizer, ConstraintSystemRef, SynthesisE
 use ark_ed_on_bls12_381::{constraints::FqVar, Fq};
 use ark_sponge::poseidon::PoseidonParameters;
 
+use ark_r1cs_std::boolean::Boolean;
+use ark_r1cs_std::eq::EqGadget;
+use ark_r1cs_std::R1CSVar;
+use ark_r1cs_std::ToBitsGadget;
 
 
 pub fn convert_2d_vector_into_1d(vec: Vec<Vec<u8>>) -> Vec<u8> {
@@ -20,6 +24,8 @@ pub fn convert_2d_vector_into_1d(vec: Vec<Vec<u8>>) -> Vec<u8> {
     }
     res
 }
+
+
 
 pub fn convert_2d_vector_into_fq(vec: Vec<Vec<u8>>) -> Vec<Fq> {
     let mut res = vec![Fq::zero(); vec[0].len() * vec.len()];
@@ -54,6 +60,44 @@ fn generate_fqvar_witness2D(cs: ConstraintSystemRef<Fq>, input: Vec<Vec<u8>>) ->
     }
     res
 }
+
+
+
+
+
+fn generate_fqvar_input(cs: ConstraintSystemRef<Fq>, input: Vec<u8>) -> Vec<FqVar> {
+    let mut res: Vec<FqVar> = Vec::new();
+    for i in 0..input.len() {
+        let fq: Fq = input[i].into();
+        let tmp = FpVar::<Fq>::new_input(ark_relations::ns!(cs, "tmp"), || Ok(fq)).unwrap();
+        res.push(tmp);
+    }
+    res
+}
+
+
+fn generate_fqvar_input2D(cs: ConstraintSystemRef<Fq>, input: Vec<Vec<u8>>) -> Vec<Vec<FqVar>> {
+    let zero_var = FpVar::<Fq>::Constant(Fq::zero());
+    let mut res: Vec<Vec<FqVar>> = vec![vec![zero_var; input[0].len()]; input.len()];
+    for i in 0..input.len() {
+        for j in 0..input[i].len() {
+            let fq: Fq = input[i][j].into();
+            let tmp = FpVar::<Fq>::new_input(ark_relations::ns!(cs, "tmp"), || Ok(fq)).unwrap();
+            res[i][j] = tmp;
+        }
+    }
+    res
+}
+
+pub fn convert_1d_vector_into_fq(vec: Vec<u8>) -> Vec<Fq> {
+    let mut res = vec![Fq::zero(); vec.len()];
+    for i in 0..vec.len() {
+        let tmp: Fq = vec[i].into();
+        res[i] = tmp;
+    }
+    res
+}
+
 
 
 #[derive(Clone)]
@@ -226,7 +270,7 @@ impl ConstraintSynthesizer<Fq> for FullCircuitClassificationAccuracy {
             //this is the index/label
             let classification_res_fq: Fq = (classification_res as u64).into();
             let classification_res_var =
-                FpVar::<Fq>::new_witness(r1cs_core::ns!(cs, "classification"), || {
+                FpVar::<Fq>::new_witness(ark_relations::ns!(cs, "classification"), || {
                     Ok(classification_res_fq)
                 })
                 .unwrap();
@@ -234,7 +278,7 @@ impl ConstraintSynthesizer<Fq> for FullCircuitClassificationAccuracy {
             //this is the value
             let classification_max: Fq = zz[classification_res].into();
             let classification_max_var =
-                FpVar::<Fq>::new_witness(r1cs_core::ns!(cs, "classification max"), || {
+                FpVar::<Fq>::new_witness(ark_relations::ns!(cs, "classification max"), || {
                     Ok(classification_max)
                 })
                 .unwrap();

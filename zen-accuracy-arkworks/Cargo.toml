@@ -29,7 +29,6 @@ ark-poly-commit = { version = "0.3.0", default-features = false }
 ark-serialize = { version = "0.3.0", default-features = false, features = [ "derive" ] }
 ark-sponge={ version = "^0.3.0", default-features = true }
 
-
 num-traits = "0.2"
 num = "0.3"
 fast-math = "0.1"
