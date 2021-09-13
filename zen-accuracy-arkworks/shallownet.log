@@ -1,0 +1,21 @@
+start generating random parameters
+Number of constraints for l1 commitment 1650503
+Number of constraints for l2 commitment 21141
+Number of constraints for accuracy result commitment 264 accumulated constraints 1671908
+Use 4 vector SIMD in current FC layer
+Use 4 vector SIMD in current FC layer
+Total number of FullCircuit inference constraints 1738472
+total cs for AccuracyCommitment Circuit: 1595
+setup time 37.995845008s
+crs size: 541225104
+random parameters generated!
+
+Number of constraints for l1 commitment 1650503
+Number of constraints for l2 commitment 21141
+Number of constraints for accuracy result commitment 264 accumulated constraints 1671908
+Use 4 vector SIMD in current FC layer
+Use 4 vector SIMD in current FC layer
+Total number of FullCircuit inference constraints 1738472
+total cs for AccuracyCommitment Circuit: 1595
+prove time 32.586011133s
+verification time 1.053389451s

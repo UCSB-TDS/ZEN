@@ -1,0 +1,40 @@
+LeNet optimized medium on CIFAR dataset
+finish reading parameters
+lenet vallina forward
+finish forwarding
+commit time 576.339086ms
+start generating random parameters
+Number of constraints for conv1 layer commitment 39411 accumulated constraints 39411
+Number of constraints for conv2 layer commitment 881497 accumulated constraints 881497
+Number of constraints for conv3 layer commitment 5192962 accumulated constraints 5192962
+Number of constraints for fc1 layer commitment 7348825 accumulated constraints 7348825
+Number of constraints for fc2 layer commitment 21141 accumulated constraints 7369966
+Number of constraints for accuracy result commitment 21405 accumulated constraints 7370230
+we don't use old SIMD
+OLD SIMD conv among multiple kernel positions on image
+OLD SIMD conv among multiple kernel channels because now input is too small.
+Use 4 vector SIMD in current FC layer
+z within circuit [[126, 126, 132, 153, 140, 140, 117, 125, 135, 114]]
+Use 4 vector SIMD in current FC layer
+Total number of LeNetCircuit Classification constraints 12744890
+total cs for AccuracyCommitment Circuit: 1595
+setup time 447.907279339s
+crs size: 3973412976
+random parameters generated!
+
+Number of constraints for conv1 layer commitment 39411 accumulated constraints 39411
+Number of constraints for conv2 layer commitment 881497 accumulated constraints 881497
+Number of constraints for conv3 layer commitment 5192962 accumulated constraints 5192962
+Number of constraints for fc1 layer commitment 7348825 accumulated constraints 7348825
+Number of constraints for fc2 layer commitment 21141 accumulated constraints 7369966
+Number of constraints for accuracy result commitment 21405 accumulated constraints 7370230
+we don't use old SIMD
+OLD SIMD conv among multiple kernel positions on image
+OLD SIMD conv among multiple kernel channels because now input is too small.
+Use 4 vector SIMD in current FC layer
+z within circuit [[126, 126, 132, 153, 140, 140, 117, 125, 135, 114]]
+Use 4 vector SIMD in current FC layer
+Total number of LeNetCircuit Classification constraints 12744890
+total cs for AccuracyCommitment Circuit: 1595
+prove time 433.311576146s
+verification time 4.59928372s
