@@ -189,7 +189,6 @@ pub struct LeNetCircuitU8OptimizedLv3PoseidonClassificationAccuracy {
     pub params: SPNGParam,
 
     pub x: Vec<Vec<Vec<Vec<u8>>>>,
-    pub x_squeeze: SPNGOutput,
 
     pub conv1_weights: Vec<Vec<Vec<Vec<u8>>>>,
     pub conv1_squeeze: SPNGOutput,
@@ -205,9 +204,6 @@ pub struct LeNetCircuitU8OptimizedLv3PoseidonClassificationAccuracy {
 
     pub fc2_weights: Vec<Vec<u8>>,
     pub fc2_squeeze: SPNGOutput,
-
-    pub z: Vec<Vec<u8>>,
-    pub z_squeeze: SPNGOutput,
 
     //zero points for quantization.
     pub x_0: u8,
@@ -323,8 +319,23 @@ impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3PoseidonClassificat
             cs.num_constraints()
         );
 
+        //commit prediction accuracy result vector. we will sum it together in the final circuit.
+        //we do not reveal this vector of 1 or 0 which leak information about ZEN's inference results on each instance in the public dataset.
+        let accuracy_com_circuit = SPNGCircuit {
+            param: self.params.clone(),
+            input: self.accuracy_result.clone(),
+            output: self.accuracy_squeeze.clone()
+        };
+        accuracy_com_circuit.generate_constraints(cs.clone())?;
+        println!(
+            "Number of constraints for accuracy result commitment {} accumulated constraints {}",
+            cs.num_constraints() - _cir_number,
+            cs.num_constraints()
+        );
+
         let x_input = generate_fqvar_input4D(cs.clone(), self.x.clone());
         let true_label_input = generate_fqvar_input(cs.clone(), self.true_labels.clone());
+
 
           //layer 1
         //conv1
@@ -674,7 +685,7 @@ impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3PoseidonClassificat
                 self.fc2_output_0,
                 &self.multiplier_fc2.clone(),
             );
-            //println!("z within circuit {:?}", fc2_output.clone());
+            println!("z within circuit {:?}", fc2_output.clone());
 
             let fc2_output_fqvar = generate_fqvar(cs.clone(), fc2_output[0].clone());
             let fc2_weights_fqvar_input =
@@ -728,7 +739,7 @@ impl ConstraintSynthesizer<Fq> for LeNetCircuitU8OptimizedLv3PoseidonClassificat
             //add final constraints on the prediction correctness
             let is_prediction_correct = true_label_input[i].is_eq(&classification_res_var).unwrap();
 
-            // println!("prediction_correct {:?}", prediction_correct.value().unwrap());
+            //println!("prediction_correct {:?}", is_prediction_correct.value().unwrap());
             if self.accuracy_result[i].clone() == 1u8 {
                 is_prediction_correct
                     .enforce_equal(&correct_prediction)
@@ -756,7 +767,6 @@ pub struct LeNetCircuitU8OptimizedLv3PoseidonRecognitionAccuracy {
     pub params: SPNGParam,
 
     pub x: Vec<Vec<Vec<Vec<u8>>>>,
-    pub x_squeeze: SPNGOutput,
 
     pub conv1_weights: Vec<Vec<Vec<Vec<u8>>>>,
     pub conv1_squeeze: SPNGOutput,
@@ -773,8 +783,6 @@ pub struct LeNetCircuitU8OptimizedLv3PoseidonRecognitionAccuracy {
     pub fc2_weights: Vec<Vec<u8>>,
     pub fc2_squeeze: SPNGOutput,
 
-    pub z: Vec<Vec<u8>>,
-    pub z_squeeze: SPNGOutput,
 
     //zero points for quantization.
     pub x_0: u8,

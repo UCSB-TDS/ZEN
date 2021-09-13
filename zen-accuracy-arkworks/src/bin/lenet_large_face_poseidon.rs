@@ -197,16 +197,12 @@ fn main() {
     //println!("z outside {:?}", flattened_z1d.clone());
     let begin = Instant::now();
     let  parameter : SPNGParam = poseidon_parameters_for_test_s();
-    let mut x_sponge = PoseidonSponge::< >::new(&parameter);
     let mut conv1_sponge = PoseidonSponge::< >::new(&parameter);
     let mut conv2_sponge = PoseidonSponge::< >::new(&parameter);
     let mut conv3_sponge = PoseidonSponge::< >::new(&parameter);
     let mut fc1_sponge = PoseidonSponge::< >::new(&parameter);
     let mut fc2_sponge = PoseidonSponge::< >::new(&parameter);
-    let mut z_sponge = PoseidonSponge::< >::new(&parameter);
 
-    x_sponge.absorb(&flattened_x1d);
-    z_sponge.absorb(&flattened_z1d);
 
     conv1_sponge.absorb(&conv1_weights_1d);
     conv2_sponge.absorb(&conv2_weights_1d);
@@ -215,13 +211,11 @@ fn main() {
     fc2_sponge.absorb(&fc2_weights_1d);
 
 
-    let x_squeeze : SPNGOutput=x_sponge.squeeze_native_field_elements(flattened_x1d.clone().len() / 32 + 1);
     let conv1_squeeze : SPNGOutput=conv1_sponge.squeeze_native_field_elements(conv1_weights_1d.clone().len() / 32 + 1);
     let conv2_squeeze : SPNGOutput=conv2_sponge.squeeze_native_field_elements(conv2_weights_1d.clone().len() / 32 + 1);
     let conv3_squeeze : SPNGOutput=conv3_sponge.squeeze_native_field_elements(conv3_weights_1d.clone().len() / 32 + 1);
     let fc1_squeeze : SPNGOutput=fc1_sponge.squeeze_native_field_elements(fc1_weights_1d.clone().len() / 32 + 1);
     let fc2_squeeze : SPNGOutput=fc2_sponge.squeeze_native_field_elements(fc2_weights_1d.clone().len() / 32 + 1);
-    let z_squeeze : SPNGOutput=z_sponge.squeeze_native_field_elements(flattened_z1d.clone().len() / 32 + 1);
 
     let mut acc_sponge = PoseidonSponge::< >::new(&parameter);
 
@@ -246,8 +240,7 @@ fn main() {
 
     let full_circuit = LeNetCircuitU8OptimizedLv3PoseidonRecognitionAccuracy{
         params: parameter.clone(),
-        x: x.clone(),
-        x_squeeze: x_squeeze.clone(),
+        x: x_current_batch.clone(),
 
         conv1_weights: conv1_w.clone(),
         conv1_squeeze: conv1_squeeze.clone(),
@@ -264,8 +257,6 @@ fn main() {
         fc2_weights: fc2_w.clone(),
         fc2_squeeze: fc2_squeeze.clone(),
 
-        z: z.clone(),
-        z_squeeze: z_squeeze.clone(),
 
         //zero points for quantization.
         x_0: x_0[0],
@@ -347,10 +338,9 @@ fn main() {
     let end = Instant::now();
     println!("prove time {:?}", end.duration_since(begin));
 
-
     let x_inputs: Vec<Fq> = convert_4d_vector_into_fq(x_current_batch.clone());
     let true_label_inputs: Vec<Fq> = convert_1d_vector_into_fq(true_labels_batch.clone());
-
+    let feature_vector_inputs : Vec<Fq> = convert_1d_vector_into_fq(person_feature_vector.clone());
 
     let inputs = [
         conv1_squeeze,
@@ -360,7 +350,8 @@ fn main() {
         fc2_squeeze,
         accuracy_squeeze[0].clone(),
         x_inputs,
-        true_label_inputs
+        true_label_inputs,
+        feature_vector_inputs
     ]
     .concat();
 
